@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Kirti Goel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #080807;
+  --bg2:         #111110;
+  --bg3:         #1a1a18;
+  --border:      rgba(255,255,255,0.08);
+  --border-mid:  rgba(255,255,255,0.15);
+  --cream:       #F0E9DC;
+  --cream-muted: #A89F92;
+  --accent:      #C85F3A;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Syne', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-size: 16px; line-height: 1.6; min-height: 100vh; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4rem; height: 72px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,7,0.9); backdrop-filter: blur(12px);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; letter-spacing: 0.05em; color: var(--cream); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream-muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+/* ── PAGE ── */
+.page-wrap { padding-top: 72px; min-height: 100vh; }
+
+/* ── FILTER BAR ── */
+.filter-bar { display: flex; align-items: center; justify-content: center; padding: 0 4rem; border-bottom: 1px solid var(--border); }
+.filter-btn {
+  font-family: var(--sans); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--cream-muted); background: none; border: none;
+  border-bottom: 2px solid transparent;
+  padding: 1.1rem 1.5rem; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s; margin-bottom: -1px;
+}
+.filter-btn:hover { color: var(--cream); }
+.filter-btn.active { color: var(--cream); border-bottom-color: var(--accent); }
+
+/* ── PROJECT GRID ── */
+.grid-wrap { padding: 2rem 4rem 5rem; transition: opacity 0.2s ease; }
+.grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; align-items: start; max-width: 1100px; margin: 0 auto; }
+
+.proj-card {
+  position: relative;
+  background: var(--bg3); cursor: pointer;
+  grid-column: span 2;
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+.proj-card:hover {
+  border-color: var(--border-mid);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+}
+.proj-card.wide    { grid-column: span 2; }
+.proj-card.narrow  { grid-column: span 2; }
+.proj-card.hidden  { display: none; }
+
+/* image section */
+.proj-img-wrap {
+  width: 100%; overflow: hidden; flex-shrink: 0;
+  height: 180px; position: relative;
+}
+.proj-card.wide .proj-img-wrap   { height: 180px; }
+.proj-card.portrait .proj-img-wrap { height: 180px; }
+
+.proj-cover {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: top center; display: block;
+  transition: transform 0.45s ease, filter 0.4s ease;
+  filter: grayscale(10%);
+}
+.proj-card:hover .proj-cover { transform: scale(1.05); filter: grayscale(0%); }
+
+/* multi-image badge */
+.proj-badge {
+  position: absolute; top: 0.75rem; right: 0.75rem;
+  background: rgba(8,8,7,0.8); border: 1px solid var(--border-mid);
+  color: var(--cream-muted); font-size: 0.6rem; font-weight: 600;
+  letter-spacing: 0.1em; padding: 0.15rem 0.5rem;
+  backdrop-filter: blur(4px); z-index: 1;
+}
+
+/* badge visibility inside bezels */
+.frame-mobile .proj-badge {
+  z-index: 4;
+  top: calc(18px + 0.6rem); /* below dynamic island area */
+}
+.frame-desktop .proj-badge {
+  z-index: 4;
+  top: calc(28px + 0.4rem); /* below browser chrome bar */
+}
+
+/* card body — always visible */
+.proj-body {
+  padding: 1rem 1.1rem 1.2rem;
+  border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+
+.proj-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.proj-tag {
+  font-size: 0.58rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent);
+  border: 1px solid rgba(200,95,58,0.35); padding: 0.12rem 0.4rem;
+}
+.proj-name {
+  font-family: var(--serif); font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-weight: 400; color: var(--cream); line-height: 1.3;
+}
+.proj-company {
+  font-size: 0.63rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--cream-muted);
+}
+
+/* hover arrow hint */
+.proj-arrow {
+  display: inline-block; margin-top: 0.1rem;
+  font-size: 0.7rem; color: var(--accent); opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.proj-card:hover .proj-arrow { opacity: 1; transform: translateX(0); }
+
+
+/* ── MOBILE PHONE BEZEL ── */
+.frame-mobile {
+  background: #101010;
+  padding: 18px 14px 12px;
+  border-radius: 26px;
+  box-shadow: inset 0 0 0 1.5px #3c3c3c;
+}
+/* phone rim overlay */
+.frame-mobile::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 26px;
+  border: 1px solid #484848;
+  pointer-events: none; z-index: 2;
+}
+/* dynamic island pill */
+.frame-mobile::after {
+  content: '';
+  position: absolute; top: 7px; left: 50%;
+  transform: translateX(-50%);
+  width: 46px; height: 10px;
+  background: #101010;
+  border-radius: 20px;
+  z-index: 3;
+}
+/* screen corners */
+.frame-mobile .proj-cover { border-radius: 10px; }
+
+
+
+/* ── TABLET BEZEL ── */
+.frame-tablet {
+  background: #111;
+  padding: 14px 18px 16px;
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1.5px #3a3a3a;
+}
+/* tablet rim */
+.frame-tablet::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 16px;
+  border: 1px solid #464646;
+  pointer-events: none; z-index: 2;
+}
+/* home bar at bottom */
+.frame-tablet::after {
+  content: '';
+  position: absolute; bottom: 6px; left: 50%;
+  transform: translateX(-50%);
+  width: 52px; height: 4px;
+  background: #333;
+  border-radius: 4px;
+  z-index: 3;
+}
+.frame-tablet .proj-cover { border-radius: 6px; }
+.frame-tablet .proj-badge {
+  z-index: 4;
+  top: calc(14px + 0.4rem);
+}
+
+/* ── BROWSER / DESKTOP BEZEL ── */
+.frame-desktop {
+  background: #161616;
+  padding: 28px 8px 8px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px #333;
+}
+/* browser chrome bar */
+.frame-desktop::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 28px;
+  background: #222;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid #333;
+  z-index: 2;
+}
+/* traffic light dots */
+.frame-desktop::after {
+  content: '';
+  position: absolute; top: 9px; left: 12px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 14px 0 0 #febc2e, 28px 0 0 #28c840;
+  z-index: 3;
+}
+.frame-desktop .proj-cover {
+  border-radius: 2px;
+}
+
+/* ── DETAIL OVERLAY ── */
+.detail-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(8,8,7,0.88); backdrop-filter: blur(8px);
+}
+.detail-overlay.open { display: flex; animation: fadeUp 0.3s ease; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.detail-inner { display: flex; width: 100%; height: 100%; overflow: hidden; }
+
+/* left: image viewer */
+.detail-viewer {
+  flex: 0 0 62%; display: flex; flex-direction: column;
+  background: var(--bg2); overflow: hidden; position: relative;
+}
+.detail-main-img {
+  flex: 1 1 0; min-height: 0; display: flex;
+  align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.detail-main-img img {
+  max-width: 100%; max-height: 100%; object-fit: contain; display: block;
+}
+
+/* img nav arrows */
+.img-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-mid); background: rgba(8,8,7,0.6);
+  color: var(--cream); font-size: 1rem; cursor: pointer;
+  transition: background 0.2s, border-color 0.2s; z-index: 2;
+  backdrop-filter: blur(4px); user-select: none;
+}
+.img-arrow:hover { background: var(--accent); border-color: var(--accent); }
+.img-arrow.prev-img { left: 1rem; }
+.img-arrow.next-img { right: 1rem; }
+.img-arrow.hidden-arrow { display: none; }
+
+/* image counter */
+.img-counter {
+  position: absolute; bottom: 1rem; right: 1.25rem;
+  font-size: 0.68rem; letter-spacing: 0.12em; color: var(--cream-muted);
+}
+
+/* thumbnail strip (only for multi-image) */
+.detail-strip {
+  flex: 0 0 auto; display: flex; gap: 4px; padding: 8px 1rem;
+  background: var(--bg); border-top: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none;
+}
+.detail-strip::-webkit-scrollbar { display: none; }
+.detail-strip.single { display: none; }
+
+.strip-thumb {
+  flex: 0 0 auto; width: 80px; height: 50px; overflow: hidden;
+  cursor: pointer; border: 2px solid transparent; opacity: 0.4;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.strip-thumb:hover { opacity: 0.75; }
+.strip-thumb.active { border-color: var(--accent); opacity: 1; }
+.strip-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* right: metadata */
+.detail-meta {
+  flex: 0 0 38%; display: flex; flex-direction: column; justify-content: center;
+  padding: 4rem 3.5rem; border-left: 1px solid var(--border);
+  background: var(--bg); overflow-y: auto; position: relative;
+}
+.detail-close {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  width: 38px; height: 38px; border: 1px solid var(--border-mid);
+  background: none; color: var(--cream-muted); font-size: 1rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.detail-close:hover { background: var(--accent); color: var(--cream); border-color: var(--accent); }
+
+.detail-company {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--cream-muted); margin-bottom: 0.6rem;
+}
+.detail-name {
+  font-family: var(--serif); font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-weight: 300; color: var(--cream); line-height: 1.25; margin-bottom: 1.25rem;
+}
+.detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+.detail-tag {
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent);
+  border: 1px solid rgba(200,95,58,0.4); padding: 0.2rem 0.55rem;
+}
+.detail-divider { width: 2rem; height: 1px; background: var(--accent); margin-bottom: 1.5rem; }
+.detail-desc { font-size: 0.88rem; color: var(--cream-muted); line-height: 1.8; }
+
+/* project nav within detail */
+.detail-proj-nav { display: flex; gap: 0.6rem; margin-top: 2.5rem; }
+.detail-proj-btn {
+  flex: 1; padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border-mid); background: none;
+  color: var(--cream-muted); font-family: var(--sans);
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.detail-proj-btn:hover { background: var(--accent); color: var(--cream); border-color: var(--accent); }
+
+/* ── Mobile sticky bar inside detail overlay ── */
+.detail-mobile-bar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  flex: 0 0 52px;
+  padding: 0 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+.detail-mobile-back {
+  display: flex; align-items: center; gap: 6px;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--sans); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--cream-muted); transition: color 0.2s;
+}
+.detail-mobile-back:hover { color: var(--cream); }
+.detail-mobile-back svg { opacity: 0.7; }
+.detail-mobile-title {
+  flex: 1; text-align: center;
+  font-family: var(--sans); font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--cream-muted); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+
+.close-label { display: none; }
+
+/* ── FOOTER ── */
+footer { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; border-top: 1px solid var(--border); }
+.footer-name { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--cream-muted); }
+.footer-copy { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--cream-muted); }
+
+/* ── Hamburger & Overlay ── */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--cream); }
+.nav-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(8,8,7,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  flex-direction: column; align-items: center; justify-content: center;
+}
+.nav-overlay.open { display: flex; }
+.nav-overlay-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none; color: var(--cream-muted);
+  font-size: 1.8rem; cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.nav-overlay-close:hover { color: var(--cream); }
+.nav-overlay-links { list-style: none; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
+.nav-overlay-link {
+  display: block; width: 100%; text-align: center;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--border);
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-muted); text-decoration: none; transition: color 0.2s;
+}
+.nav-overlay-link:first-child { border-top: 1px solid var(--border); }
+.nav-overlay-link:hover, .nav-overlay-link.active { color: var(--cream); }
+
+@media (max-width: 900px) {
+  nav { padding: 0 2rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .filter-bar { padding: 0 2rem; overflow-x: auto; scrollbar-width: none; }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .grid-wrap { padding: 1.5rem 1.5rem 4rem; }
+  footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.4rem; text-align: center; }
+
+  /* ── Detail overlay on mobile ── */
+  .detail-overlay { align-items: flex-end; }
+  .detail-inner { flex-direction: column; height: 100%; }
+  .detail-mobile-bar { display: flex; }
+  .detail-viewer { flex: 0 0 48vh; min-height: 0; }
+  .detail-main-img { height: 100%; }
+  .detail-meta {
+    flex: 1 1 0; min-height: 0;
+    padding: 1.25rem 1.5rem 2rem;
+    border-left: none; border-top: 1px solid var(--border);
+    justify-content: flex-start;
+  }
+  .detail-close { display: none; }
+  .detail-name { font-size: 1.25rem; }
+  .detail-proj-nav { margin-top: 1.5rem; }
+
+}
+@media (max-width: 540px) {
+  nav { padding: 0 1.25rem; }
+  .filter-bar { padding: 0 1.25rem; }
+  .grid-wrap { padding: 1.25rem 1.25rem 3rem; }
+  footer { padding: 1.25rem 1.25rem; }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Kirti <span>Goel</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="case-studies.html">Case Studies</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html" class="active">Work</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="filter-bar">
+    <span style="font-size:0.68rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--cream-muted);margin-right:2rem;">Designs from selected work</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="dashboard">Dashboards</button>
+    <button class="filter-btn" data-filter="mobile">Mobile</button>
+    <button class="filter-btn" data-filter="app">Apps</button>
+  </div>
+
+  <div class="grid-wrap" id="gridWrap">
+    <div class="grid" id="projGrid"></div>
+  </div>
+
+  <footer>
+    <span class="footer-name">Kirti Goel — UX Leader</span>
+    <span class="footer-copy">© 2026 All Rights Reserved</span>
+  </footer>
+</div>
+
+<!-- DETAIL OVERLAY -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-inner">
+
+    <!-- mobile sticky bar: back + project title (hidden on desktop) -->
+    <div class="detail-mobile-bar">
+      <button class="detail-mobile-back" onclick="closeDetail()">
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+          <path d="M8 1L3 6L8 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        All Work
+      </button>
+      <div class="detail-mobile-title" id="detailMobileTitle"></div>
+    </div>
+
+    <div class="detail-viewer">
+      <div class="detail-main-img" id="detailMainImg">
+        <img id="detailImg" src="" alt="">
+        <div class="img-arrow prev-img" id="imgPrev">&#8592;</div>
+        <div class="img-arrow next-img" id="imgNext">&#8594;</div>
+        <div class="img-counter" id="imgCounter"></div>
+      </div>
+      <div class="detail-strip" id="detailStrip"></div>
+    </div>
+
+    <div class="detail-meta">
+      <button class="detail-close" id="detailClose">&#215;</button>
+      <div class="detail-company" id="detailCompany"></div>
+      <div class="detail-name"    id="detailName"></div>
+      <div class="detail-tags"    id="detailTags"></div>
+      <div class="detail-divider"></div>
+      <div class="detail-desc"    id="detailDesc"></div>
+      <div class="detail-proj-nav">
+        <button class="detail-proj-btn" id="projPrev">&#8592; Prev project</button>
+        <button class="detail-proj-btn" id="projNext">Next project &#8594;</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   PROJECT DATA
+   cat: 'dashboard' | 'mobile' | 'app'
+   To add a new project: add an entry here.
+   To add a new company: just set the company field.
+═══════════════════════════════════════════ */
+var PROJECTS = [
+  {
+    id: 'ab-home',
+    name: 'Home Screen Revamp',
+    company: 'Axis Bank',
+    cat: 'mobile',
+    tags: ['Mobile App', 'Banking', 'UX Design'],
+    desc: "The Axis Bank's home screen was critical for triggering all sub-workflows and enabling product upselling. The home screen was designed to hide the balance upfront without a slide gesture — so that when people log in in public places, the balance is not visible to people nearby. All options were well presented and grouped for easy navigation.",
+    cover: 'images/Work/AB_HomeScreen/AB_HomeScreen_03.png',
+    images: [
+      'images/Work/AB_HomeScreen/AB_HomeScreen_01.png',
+      'images/Work/AB_HomeScreen/AB_HomeScreen_02.png',
+      'images/Work/AB_HomeScreen/AB_HomeScreen_03.png',
+      'images/Work/AB_HomeScreen/AB_HomeScreen_SideMenu.png',
+      'images/Work/AB_HomeScreen/AB_HomeScreen_Overview.png',
+      'images/Work/AB_HomeScreen/AB_HomeScreen_Animated.gif'
+    ],
+    wide: true
+  },
+  {
+    id: 'ab-payments',
+    name: 'Bill Payments & Fund Transfer',
+    company: 'Axis Bank',
+    cat: 'mobile',
+    tags: ['Mobile App', 'Banking', 'Workflows'],
+    desc: 'Bill payment and fund transfer flows designed in a highly accessible way. The workflows simplified complex banking transactions into clear, step-by-step journeys — reducing errors and increasing completion rates.',
+    cover: 'images/Work/AB_Payments/AB_FundTransfer_01.png',
+    images: [
+      'images/Work/AB_Payments/AB_Payments_01.png',
+      'images/Work/AB_Payments/AB_Payments_02.png',
+      'images/Work/AB_Payments/AB_Payments_03.png',
+      'images/Work/AB_Payments/AB_Payments_CreditCard.png',
+      'images/Work/AB_Payments/AB_FundTransfer_01.png',
+      'images/Work/AB_Payments/AB_FundTransfer_02.png',
+      'images/Work/AB_Payments/AB_FundTransfer_03.png',
+      'images/Work/AB_Payments/AB_FundTransfer_04.png'
+    ],
+    wide: true
+  },
+  {
+    id: 'ab-asap',
+    name: 'ASAP — Zero Balance Account',
+    company: 'Axis Bank',
+    cat: 'mobile',
+    tags: ['Mobile App', 'Banking', 'Onboarding'],
+    desc: 'End-to-end workflow for opening a new Axis ASAP zero balance account — designed for mobile-first, digital-native customers. The experience enabled rapid digital account opening and drove 5 Lakh downloads shortly after launch.',
+    cover: 'images/Work/AB_ASAP/AB_ASAP_01.png',
+    images: [
+      'images/Work/AB_ASAP/AB_ASAP_01.png',
+      'images/Work/AB_ASAP/AB_ASAP_02.png',
+      'images/Work/AB_ASAP/AB_ASAP_03.png',
+      'images/Work/AB_ASAP/AB_ASAP_04.png'
+    ],
+    wide: true
+  },
+  {
+    id: 'dr-onboarding',
+    bezel: 'desktop',
+    name: 'Line Setup & Onboarding Workflow',
+    company: 'Drishti',
+    cat: 'app',
+    tags: ['Web App', 'Onboarding', 'SaaS'],
+    desc: "Onboarding workflow for manufacturing customers on Drishti's platform. Consolidated factory setup, line configuration, ML video dataset setup, AI inference configuration, and software version management — previously scattered across emails and files — into a single guided in-product journey.",
+    cover: 'images/Work/DR_LineSetup/DR_LineSetup_01.png',
+    images: [
+      'images/Work/DR_LineSetup/DR_LineSetup_01.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_02.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_03.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_04.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_05.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_06.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_07.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_08.png',
+      'images/Work/DR_LineSetup/DR_AISetup_01.png',
+      'images/Work/DR_LineSetup/DR_AISetup_02.png',
+      'images/Work/DR_LineSetup/DR_AISetup_03.png',
+      'images/Work/DR_LineSetup/DR_AISetup_04.png',
+      'images/Work/DR_LineSetup/DR_AISetup_05.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_DefineSW.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_SWVList.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_AddCompare.png',
+      'images/Work/DR_LineSetup/DR_LineSetup_SearchCycles.png'
+    ]
+  },
+  {
+    id: 'dr-dashboard',
+    bezel: 'desktop',
+    name: 'Assembly Line Status Dashboard',
+    company: 'Drishti',
+    cat: 'dashboard',
+    tags: ['Dashboard', 'Data Viz', 'Manufacturing'],
+    desc: "Operational dashboards for Line and Station levels, designed for multiple personas — Line Supervisors, Industrial Engineers, and Quality Engineers. Each dashboard surfaces three dimensions of performance: Productivity (Total Cycle Count, Time Loss, Downtime, Speed Loss), Performance (LBR, Avg Cycle Time, Bottleneck Stations, Variability), and Quality (Audit cycles, Critical Checks, Anomaly detection). Built on a modular, repeatable system with clear CTAs linking to detailed analytics, filtered video reviews, and improvement workflows.",
+    cover: 'images/Work/DR_Dashboard/DR_Dashboard_Factory.png',
+    images: [
+      'images/Work/DR_Dashboard/DR_Dashboard_Factory.png',
+      'images/Work/DR_Dashboard/DR_Dashboard_Line.png',
+      'images/Work/DR_Dashboard/DR_Dashboard_Station.png'
+    ]
+  },
+  {
+    id: 'dr-operator',
+    bezel: 'tablet',
+    name: 'Line Operator Workstation',
+    company: 'Drishti',
+    cat: 'dashboard',
+    tags: ['HMI', 'Manufacturing', 'Workstation'],
+    desc: "Live tracking interface for line operators on workstations across assembly lines. Operators could monitor real-time production status, access mentor guidance, view logs, and configure their workstation — all from a purpose-built HMI designed for factory floor conditions.",
+    cover: 'images/Work/DR_Operator/DR_Operator_Mentor_01.png',
+    images: [
+      'images/Work/DR_Operator/DR_Operator_Shopfloor.png',
+      'images/Work/DR_Operator/DR_Operator_Home.png',
+      'images/Work/DR_Operator/DR_Operator_Current.png',
+      'images/Work/DR_Operator/DR_Operator_Screen.png',
+      'images/Work/DR_Operator/DR_Operator_Menu.png',
+      'images/Work/DR_Operator/DR_Operator_Mentor_01.png',
+      'images/Work/DR_Operator/DR_Operator_MentorLogs.png',
+      'images/Work/DR_Operator/DR_Operator_MentorConfig.png'
+    ]
+  },
+  {
+    id: 'dr-rca',
+    bezel: 'desktop',
+    name: 'Root Cause Analysis & Collaboration Tasks',
+    company: 'Drishti',
+    cat: 'app',
+    tags: ['Web App', 'Manufacturing', 'Collaboration'],
+    desc: "Workflows for diagnosing production issues and driving resolution across teams. The RCA flow guided engineers through structured problem identification — linking anomalies, audit failures, and cycle data directly to root causes. Collaboration Tasks brought together cross-functional stakeholders to assign, track, and close improvement actions — closing the loop between data insights and line improvements.",
+    cover: 'images/Work/DR_RCA/DR_RCA_01.png',
+    images: [
+      'images/Work/DR_RCA/DR_RCA_01.png',
+      'images/Work/DR_RCA/DR_RCA_02.png',
+      'images/Work/DR_RCA/DR_RCA_03.png',
+      'images/Work/DR_RCA/DR_RCA_04.png',
+      'images/Work/DR_RCA/DR_RCA_05.png',
+      'images/Work/DR_RCA/DR_Collab_01.png',
+      'images/Work/DR_RCA/DR_Collab_02.png',
+      'images/Work/DR_RCA/DR_CollabTasks.png'
+    ]
+  },
+  {
+    id: 'weav-dashboard',
+    bezel: 'desktop',
+    name: 'Demand Forecasting Dashboard',
+    company: 'WEAV',
+    cat: 'dashboard',
+    tags: ['Dashboard', 'Data Viz', 'Retail'],
+    desc: 'Dashboard design for demand forecasting for a large nationwide supermarket with a presence in all US states and major cities. The interface surfaced the most critical supply signals to enable fast, accurate purchasing decisions.',
+    cover: 'images/Work/WEAV_Dashboard/WEAV_Dashboard_DemandForecast.png',
+    images: [
+      'images/Work/WEAV_Dashboard/WEAV_Dashboard_DemandForecast.png',
+      'images/Work/WEAV_Dashboard/WEAV_Dashboard_02.png',
+      'images/Work/WEAV_Dashboard/WEAV_Dashboard_03.png',
+      'images/Work/WEAV_Dashboard/WEAV_Dashboard_04.png',
+      'images/Work/WEAV_Dashboard/WEAV_Dashboard_05.png'
+    ]
+  },
+  {
+    id: 'weav-doccopilot',
+    bezel: 'desktop',
+    name: 'Document Copilot',
+    company: 'WEAV',
+    cat: 'app',
+    tags: ['Web App', 'Document Management', 'AI'],
+    desc: "A document browsing and management interface designed for WEAV's platform. The Document Copilot enabled users to navigate large document libraries, view and interact with structured forms, and surface the right information quickly — combining a clean document list view with a detailed form viewer for in-context reading and editing.",
+    cover: 'images/Work/WEAV_DOCUMENTCOPILOT/WEAV_DocCopilot_Browser.png',
+    images: [
+      'images/Work/WEAV_DOCUMENTCOPILOT/WEAV_DocCopilot_Browser.png',
+      'images/Work/WEAV_DOCUMENTCOPILOT/WEAV_DocCopilot_List.png',
+      'images/Work/WEAV_DOCUMENTCOPILOT/WEAV_DocCopilot_ViewForm.png'
+    ]
+  },
+  {
+    id: 'fd-totalflow',
+    name: 'ABB TotalFlow — Oil & Gas HMI',
+    company: 'frog Design',
+    cat: 'dashboard',
+    tags: ['HMI', 'Industrial', 'Dashboard'],
+    desc: 'Situation-aware HMI designed for a major client at frog Design. Oil production and storage in tanks were monitored through purpose-built interfaces designed for high-stress field conditions.',
+    cover: 'images/Work/FD_TotalFlow/FD_HMI_TotalFlow.png',
+    images: ['images/Work/FD_TotalFlow/FD_HMI_TotalFlow.png'],
+    wide: false
+  },
+  {
+    id: 'fd-tablet',
+    name: 'Gas Transmission Monitoring — Tablet HMI',
+    company: 'frog Design',
+    cat: 'dashboard',
+    tags: ['HMI', 'Industrial', 'Tablet'],
+    desc: 'Situation-aware tablet HMI for gas transmission monitoring at frog Design. Compositions and pipeline parameters were tracked through field analysers — designed for outdoor use, split-second decisions, and high operational pressure.',
+    cover: 'images/Work/FD_Tablet/FD_HMI_Tablet.jpg',
+    images: ['images/Work/FD_Tablet/FD_HMI_Tablet.jpg'],
+    wide: true
+  },
+  {
+    id: 'ei-collab',
+    name: 'Workplace Collaboration Platform',
+    company: 'eICHIBA',
+    cat: 'app',
+    tags: ['Web App', 'Collaboration', 'SaaS'],
+    desc: "Dashboard and workflows for showing workplace collaboration at eICHIBA. The platform was built to bring together projects, collaboration, communication, and co-working spaces for small-sized teams.",
+    cover: 'images/Work/EI_Collaboration/EI_Collaboration.png',
+    images: ['images/Work/EI_Collaboration/EI_Collaboration.png'],
+    wide: true
+  },
+  {
+    id: 'fd-designmind',
+    name: 'designMind — Tablet Magazine',
+    company: 'frog Design',
+    cat: 'app',
+    tags: ['Tablet App', 'Publication', 'Digital'],
+    desc: "Publication of a magazine on tablet form factor designed by frog Design. The frog Design in-house marketing publication was digitised for an immersive tablet reading experience.",
+    cover: 'images/Work/FD_DesignMind/FD_DesignMind.png',
+    images: ['images/Work/FD_DesignMind/FD_DesignMind.png'],
+    wide: false
+  },
+  {
+    id: 'fd-fansmak',
+    name: 'Fansmak — Sports Analytics',
+    company: 'frog Design',
+    cat: 'mobile',
+    tags: ['Mobile App', 'Analytics', 'Sports'],
+    desc: 'Fansmak was designed to showcase how sports analytics could be visualised for fans. The subtle use of team colors and background texture was used to enhance the visual experience.',
+    cover: 'images/Work/FD_Fansmak/FD_Fansmak.png',
+    images: ['images/Work/FD_Fansmak/FD_Fansmak.png'],
+    portrait: true
+  },
+  {
+    id: 'tn-hotel',
+    name: 'Hotel Reservation Workflow',
+    company: 'TeleNav',
+    cat: 'mobile',
+    tags: ['Mobile App', 'Location Services'],
+    desc: 'Designed workflow for hotel reservation as an add-on to TeleNav location-based services — making it seamless for users to book accommodation directly within the navigation experience.',
+    cover: 'images/Work/TN_HotelReservation/TN_HotelReservation.jpg',
+    images: ['images/Work/TN_HotelReservation/TN_HotelReservation.jpg'],
+    portrait: true
+  },
+  {
+    id: 'tn-onmyway',
+    name: 'OnMyWay — ETA Application',
+    company: 'TeleNav',
+    cat: 'mobile',
+    tags: ['Mobile App', 'Location Services'],
+    desc: "Designed the OnMyWay application to inform the estimated time of arrival to the person one is about to meet. TeleNav, alongside its navigator, launched a suite of other location-based services.",
+    cover: 'images/Work/TN_OnMyWay/TN_OnMyWay.jpg',
+    images: ['images/Work/TN_OnMyWay/TN_OnMyWay.jpg'],
+    portrait: true
+  }
+];
+
+/* ═══════════════════════════════════════════
+   BUILD GRID
+═══════════════════════════════════════════ */
+var grid       = document.getElementById('projGrid');
+var gridWrap   = document.getElementById('gridWrap');
+var activeFilter = 'all';
+
+PROJECTS.forEach(function(p, i) {
+  var card = document.createElement('div');
+  var cls  = 'proj-card';
+  if (p.portrait) cls += ' portrait narrow';
+  else if (p.wide) cls += ' wide';
+  card.className = cls;
+  card.setAttribute('data-cat', p.cat);
+  card.setAttribute('data-i', i);
+
+  var badge = p.images.length > 1
+    ? '<div class="proj-badge">' + p.images.length + ' screens</div>'
+    : '';
+
+  var tags = p.tags.map(function(t){ return '<span class="proj-tag">' + t + '</span>'; }).join('');
+
+  var wrapClass = 'proj-img-wrap' + (p.cat === 'mobile' ? ' frame-mobile' : p.bezel === 'desktop' ? ' frame-desktop' : p.bezel === 'tablet' ? ' frame-tablet' : '');
+  card.innerHTML =
+    '<div class="' + wrapClass + '">' +
+      '<img class="proj-cover" src="' + p.cover + '" alt="' + p.name + '">' +
+      badge +
+    '</div>' +
+    '<div class="proj-body">' +
+      '<div class="proj-tags">' + tags + '</div>' +
+      '<div class="proj-name">' + p.name + '<span class="proj-arrow"> &#8599;</span></div>' +
+      '<div class="proj-company">' + p.company + '</div>' +
+    '</div>';
+
+  card.addEventListener('click', function() { openDetail(i); });
+  grid.appendChild(card);
+});
+
+/* ═══════════════════════════════════════════
+   FILTER
+═══════════════════════════════════════════ */
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var f = this.getAttribute('data-filter');
+    if (f === activeFilter) return;
+    activeFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+    this.classList.add('active');
+    gridWrap.style.opacity = '0';
+    setTimeout(function() {
+      document.querySelectorAll('.proj-card').forEach(function(card) {
+        var cat = card.getAttribute('data-cat');
+        card.classList.toggle('hidden', f !== 'all' && cat !== f);
+      });
+      gridWrap.style.opacity = '1';
+    }, 200);
+  });
+});
+
+/* ═══════════════════════════════════════════
+   DETAIL OVERLAY
+═══════════════════════════════════════════ */
+var overlay    = document.getElementById('detailOverlay');
+var detailImg  = document.getElementById('detailImg');
+var imgCounter = document.getElementById('imgCounter');
+var imgPrev    = document.getElementById('imgPrev');
+var imgNext    = document.getElementById('imgNext');
+var detailStrip= document.getElementById('detailStrip');
+
+var openProjIdx  = -1;
+var openImgIdx   = 0;
+
+function getVisibleProjIndices() {
+  var vis = [];
+  document.querySelectorAll('.proj-card').forEach(function(card) {
+    if (!card.classList.contains('hidden')) vis.push(parseInt(card.getAttribute('data-i')));
+  });
+  return vis;
+}
+
+function openDetail(projIdx) {
+  openProjIdx = projIdx;
+  openImgIdx  = 0;
+  renderDetail();
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderDetail() {
+  var p = PROJECTS[openProjIdx];
+  var total = p.images.length;
+
+  /* meta */
+  document.getElementById('detailCompany').textContent = p.company;
+  document.getElementById('detailName').textContent    = p.name;
+  document.getElementById('detailMobileTitle').textContent = p.name;
+  document.getElementById('detailDesc').textContent    = p.desc;
+  var tagsEl = document.getElementById('detailTags');
+  tagsEl.innerHTML = p.tags.map(function(t){ return '<span class="detail-tag">'+t+'</span>'; }).join('');
+
+  /* main image */
+  detailImg.src = p.images[openImgIdx];
+  detailImg.alt = p.name;
+
+  /* counter & arrows */
+  if (total > 1) {
+    imgCounter.textContent = (openImgIdx + 1) + ' / ' + total;
+    imgPrev.className = 'img-arrow prev-img' + (openImgIdx === 0 ? ' hidden-arrow' : '');
+    imgNext.className = 'img-arrow next-img' + (openImgIdx === total - 1 ? ' hidden-arrow' : '');
+  } else {
+    imgCounter.textContent = '';
+    imgPrev.className = 'img-arrow prev-img hidden-arrow';
+    imgNext.className = 'img-arrow next-img hidden-arrow';
+  }
+
+  /* thumbnail strip */
+  detailStrip.innerHTML = '';
+  if (total > 1) {
+    detailStrip.className = 'detail-strip';
+    p.images.forEach(function(src, i) {
+      var th = document.createElement('div');
+      th.className = 'strip-thumb' + (i === openImgIdx ? ' active' : '');
+      th.innerHTML = '<img src="' + src + '" loading="lazy">';
+      th.addEventListener('click', function() { openImgIdx = i; renderDetail(); });
+      detailStrip.appendChild(th);
+    });
+  } else {
+    detailStrip.className = 'detail-strip single';
+  }
+}
+
+function closeDetail() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  openProjIdx = -1;
+}
+
+function shiftImage(dir) {
+  var p = PROJECTS[openProjIdx];
+  var next = openImgIdx + dir;
+  if (next < 0 || next >= p.images.length) return;
+  openImgIdx = next;
+  renderDetail();
+}
+
+function shiftProject(dir) {
+  var vis  = getVisibleProjIndices();
+  var pos  = vis.indexOf(openProjIdx);
+  var next = pos + dir;
+  if (next < 0 || next >= vis.length) return;
+  openDetail(vis[next]);
+}
+
+imgPrev.addEventListener('click', function() { shiftImage(-1); });
+imgNext.addEventListener('click', function() { shiftImage(1); });
+document.getElementById('projPrev').addEventListener('click', function() { shiftProject(-1); });
+document.getElementById('projNext').addEventListener('click', function() { shiftProject(1); });
+document.getElementById('detailClose').addEventListener('click', closeDetail);
+
+overlay.addEventListener('click', function(e) { if (e.target === overlay) closeDetail(); });
+
+document.addEventListener('keydown', function(e) {
+  if (!overlay.classList.contains('open')) return;
+  if (e.key === 'Escape')     closeDetail();
+  if (e.key === 'ArrowRight') shiftImage(1);
+  if (e.key === 'ArrowLeft')  shiftImage(-1);
+  if (e.key === 'ArrowUp')    shiftProject(-1);
+  if (e.key === 'ArrowDown')  shiftProject(1);
+});
+</script>
+<div class="nav-overlay" id="navOverlay">
+  <button class="nav-overlay-close" id="navOverlayClose">&#x2715;</button>
+  <ul class="nav-overlay-links">
+    <li><a href="index.html" class="nav-overlay-link">Home</a></li>
+    <li><a href="case-studies.html" class="nav-overlay-link">Case Studies</a></li>
+    <li><a href="services.html" class="nav-overlay-link">Services</a></li>
+    <li><a href="about.html" class="nav-overlay-link">About</a></li>
+    <li><a href="work.html" class="nav-overlay-link active">Work</a></li>
+    <li><a href="contact.html" class="nav-overlay-link">Contact</a></li>
+  </ul>
+</div>
+<script>
+  const _nh = document.getElementById('navHamburger');
+  const _no = document.getElementById('navOverlay');
+  const _nc = document.getElementById('navOverlayClose');
+  function openNav()  { _no.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeNav() { _no.classList.remove('open'); document.body.style.overflow = ''; }
+  _nh.addEventListener('click', openNav);
+  _nc.addEventListener('click', closeNav);
+  _no.addEventListener('click', e => { if (e.target === _no) closeNav(); });
+  document.querySelectorAll('.nav-overlay-link').forEach(l => l.addEventListener('click', closeNav));
+</script>
+
+</body>
+</html>

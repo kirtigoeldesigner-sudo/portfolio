@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Kirti Goel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg:          #080807;
+    --bg2:         #111110;
+    --bg3:         #1a1a18;
+    --border:      rgba(255,255,255,0.08);
+    --border-mid:  rgba(255,255,255,0.15);
+    --cream:       #F0E9DC;
+    --cream-muted: #A89F92;
+    --accent:      #C85F3A;
+    --accent-warm: #D4834A;
+    --gold:        #A8894F;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans:  'Syne', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-size: 16px; line-height: 1.6; min-height: 100vh; }
+  img { display: block; max-width: 100%; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4rem; height: 72px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,7,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; letter-spacing: 0.05em; color: var(--cream); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream-muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+/* ── Hamburger & Overlay ── */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--cream); }
+.nav-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(8,8,7,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  flex-direction: column; align-items: center; justify-content: center;
+}
+.nav-overlay.open { display: flex; }
+.nav-overlay-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none; color: var(--cream-muted);
+  font-size: 1.8rem; cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.nav-overlay-close:hover { color: var(--cream); }
+.nav-overlay-links { list-style: none; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
+.nav-overlay-link {
+  display: block; width: 100%; text-align: center;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--border);
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-overlay-link:first-child { border-top: 1px solid var(--border); }
+.nav-overlay-link:hover, .nav-overlay-link.active { color: var(--cream); }
+
+/* ── PAGE WRAP ── */
+.page-wrap { padding-top: 72px; min-height: 100vh; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-name { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--cream-muted); }
+.footer-copy { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-muted); opacity: 0.5; }
+
+@media (max-width: 900px) {
+  nav { padding: 0 2rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.4rem; text-align: center; }
+}
+@media (max-width: 540px) {
+  nav { padding: 0 1.25rem; }
+  footer { padding: 1.25rem 1.25rem; }
+}
+
+
+/* ── SECTION HEADER ── */
+.services-wrap { max-width: 1100px; margin: 0 auto; }
+
+.section-header {
+  padding: 5rem 4rem 4rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 2rem;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 300; letter-spacing: -0.01em; color: var(--cream);
+}
+.section-title em { font-style: italic; color: var(--accent-warm); }
+
+/* ── SERVICES GRID ── */
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+.service-card {
+  border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 3rem 2.5rem; position: relative; overflow: hidden; transition: background 0.3s;
+}
+.service-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease;
+}
+.service-card:hover { background: var(--bg2); }
+.service-card:hover::before { transform: scaleX(1); }
+.service-num {
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1rem; display: block;
+}
+.service-name {
+  font-family: var(--serif); font-size: 1.5rem; font-weight: 400;
+  color: var(--cream); margin-bottom: 1rem; line-height: 1.25;
+}
+.service-desc { font-size: 1rem; color: var(--cream-muted); line-height: 1.7; }
+
+/* ── CTA STRIP ── */
+.cta-strip {
+  padding: 4rem;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem;
+}
+.cta-strip-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
+.cta-strip-text p:first-child {
+  font-family: var(--serif); font-size: 1.75rem; font-weight: 300; color: var(--cream); margin-bottom: 0.5rem;
+}
+.cta-strip-text p:last-child { font-size: 1rem; color: var(--cream-muted); }
+.btn-primary {
+  display: inline-block; font-family: var(--sans); font-size: 0.9rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); background: var(--accent);
+  border: none; padding: 1rem 2rem; text-decoration: none; cursor: pointer; transition: background 0.25s, transform 0.2s;
+}
+.btn-primary:hover { background: var(--accent-warm); transform: translateY(-1px); }
+
+@media (max-width: 900px) {
+  .section-header { padding: 3rem 2rem 2.5rem; flex-wrap: wrap; gap: 0.5rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .service-card { padding: 2.5rem 2rem; }
+  .cta-strip { padding: 2.5rem 2rem; flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 540px) {
+  .section-header { padding: 2.5rem 1.25rem 2rem; }
+  .service-card { padding: 2rem 1.25rem; }
+  .cta-strip { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Kirti <span>Goel</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="case-studies.html">Case Studies</a></li>
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="services-wrap">
+  <div class="section-header">
+    <h1 class="section-title">Available <em>Services</em></h1>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <h3 class="service-name">UX Workshops</h3>
+      <p class="service-desc">Developed a prototype but unsure if the experience lands? I facilitate deep-dive workshops to analyse user flows, identify pain points, and map out detailed journeys that elevate overall experience.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <h3 class="service-name">Feature Enhancement</h3>
+      <p class="service-desc">Looking to expand your feature set and customer journey? I design enhancements that integrate seamlessly into existing flows — coherent, intentional, and invisible in the best way.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <h3 class="service-name">Visual Design Language</h3>
+      <p class="service-desc">Your flow is solid but the product doesn't feel right yet. I help carve a distinctive visual niche — crafting a design language that resonates and differentiates your product.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">04</span>
+      <h3 class="service-name">Product Usage Metrics</h3>
+      <p class="service-desc">Struggling to scale while keeping acquisition costs down? I identify key product metrics — activation rate, retention, feature adoption — and the strategies to move them.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">05</span>
+      <h3 class="service-name">Usage &amp; Behaviour Analysis</h3>
+      <p class="service-desc">Have a few thousand users and want to understand them deeply? I review analytics to uncover drop-off points, underutilised features, and friction in the intended user journey.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">06</span>
+      <h3 class="service-name">Executive Dashboards</h3>
+      <p class="service-desc">Power users need dashboards that make dense data legible at a glance. I design effective, beautiful dashboards with careful consideration of overview vs. detail — for the decisions that matter.</p>
+    </div>
+  </div>
+  </div><!-- /services-wrap -->
+
+  <div class="cta-strip">
+    <div class="cta-strip-inner">
+      <div class="cta-strip-text">
+        <p>Let's work together.</p>
+        <p>Available for consulting, fractional leadership, and advisory roles.</p>
+      </div>
+      <a class="btn-primary" href="contact.html">Start a Conversation</a>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-name">Kirti Goel — UX Leader</span>
+    <span class="footer-copy">© 2026 All Rights Reserved</span>
+  </footer>
+
+</div>
+
+<div class="nav-overlay" id="navOverlay">
+  <button class="nav-overlay-close" id="navOverlayClose">&#x2715;</button>
+  <ul class="nav-overlay-links">
+    <li><a href="index.html" class="nav-overlay-link">Home</a></li>
+    <li><a href="case-studies.html" class="nav-overlay-link">Case Studies</a></li>
+    <li><a href="services.html" class="nav-overlay-link active">Services</a></li>
+    <li><a href="about.html" class="nav-overlay-link">About</a></li>
+    <li><a href="work.html" class="nav-overlay-link">Work</a></li>
+    <li><a href="contact.html" class="nav-overlay-link">Contact</a></li>
+  </ul>
+</div>
+<script>
+  const _nh = document.getElementById('navHamburger');
+  const _no = document.getElementById('navOverlay');
+  const _nc = document.getElementById('navOverlayClose');
+  function openNav()  { _no.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeNav() { _no.classList.remove('open'); document.body.style.overflow = ''; }
+  _nh.addEventListener('click', openNav);
+  _nc.addEventListener('click', closeNav);
+  _no.addEventListener('click', e => { if (e.target === _no) closeNav(); });
+  document.querySelectorAll('.nav-overlay-link').forEach(l => l.addEventListener('click', closeNav));
+</script>
+</body>
+</html>

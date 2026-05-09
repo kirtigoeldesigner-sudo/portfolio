@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Kirti Goel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg:          #080807;
+    --bg2:         #111110;
+    --bg3:         #1a1a18;
+    --border:      rgba(255,255,255,0.08);
+    --border-mid:  rgba(255,255,255,0.15);
+    --cream:       #F0E9DC;
+    --cream-muted: #A89F92;
+    --accent:      #C85F3A;
+    --accent-warm: #D4834A;
+    --gold:        #A8894F;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans:  'Syne', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-size: 16px; line-height: 1.6; min-height: 100vh; }
+  img { display: block; max-width: 100%; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4rem; height: 72px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,7,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; letter-spacing: 0.05em; color: var(--cream); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream-muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+/* ── Hamburger & Overlay ── */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--cream); }
+.nav-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(8,8,7,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  flex-direction: column; align-items: center; justify-content: center;
+}
+.nav-overlay.open { display: flex; }
+.nav-overlay-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none; color: var(--cream-muted);
+  font-size: 1.8rem; cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.nav-overlay-close:hover { color: var(--cream); }
+.nav-overlay-links { list-style: none; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
+.nav-overlay-link {
+  display: block; width: 100%; text-align: center;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--border);
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-overlay-link:first-child { border-top: 1px solid var(--border); }
+.nav-overlay-link:hover, .nav-overlay-link.active { color: var(--cream); }
+
+/* ── PAGE WRAP ── */
+.page-wrap { padding-top: 72px; min-height: 100vh; }
+.about-wrap { max-width: 1100px; margin: 0 auto; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-name { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--cream-muted); }
+.footer-copy { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-muted); opacity: 0.5; }
+
+@media (max-width: 900px) {
+  nav { padding: 0 2rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.4rem; text-align: center; }
+}
+@media (max-width: 540px) {
+  nav { padding: 0 1.25rem; }
+  footer { padding: 1.25rem 1.25rem; }
+}
+
+
+/* ── SECTION HEADER ── */
+.section-header {
+  padding: 5rem 4rem 4rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 2rem;
+}
+.section-title {
+  font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 300; letter-spacing: -0.01em; color: var(--cream);
+}
+.section-title em { font-style: italic; color: var(--accent-warm); }
+
+/* ── ABOUT GRID ── */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 72px - 160px); }
+.about-left { padding: 5rem 4rem; border-right: 1px solid var(--border); }
+.about-right { padding: 5rem 4rem; }
+
+.about-portrait {
+  width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: top;
+  display: block; filter: grayscale(20%) contrast(1.05); margin-bottom: 2.5rem; max-width: 280px;
+}
+.about-intro {
+  font-family: var(--serif); font-size: 1.6rem; font-weight: 300;
+  line-height: 1.45; color: var(--cream); margin-bottom: 1.5rem;
+}
+.about-intro em { font-style: italic; color: var(--accent-warm); }
+.about-body { font-size: 1rem; color: var(--cream-muted); line-height: 1.8; margin-bottom: 1.5rem; }
+
+.edu-label {
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1rem; display: block;
+}
+.edu-item { margin-bottom: 1.5rem; }
+.edu-school { font-family: var(--serif); font-size: 1.05rem; color: var(--cream); margin-bottom: 0.25rem; }
+.edu-degree { font-size: 0.92rem; color: var(--cream-muted); }
+
+/* ── TIMELINE ── */
+.timeline { list-style: none; }
+.timeline-item {
+  display: grid; grid-template-columns: 110px 1fr; gap: 2rem;
+  padding-bottom: 2.5rem; position: relative;
+}
+.timeline-item:not(:last-child)::after {
+  content: ''; position: absolute; left: 118px; top: 28px; bottom: 0;
+  width: 1px; background: var(--border);
+}
+.timeline-year {
+  font-family: var(--serif); font-size: 0.9rem; font-weight: 400;
+  color: var(--accent); padding-top: 4px; letter-spacing: 0.03em; line-height: 1.45;
+}
+.timeline-company {
+  font-size: 0.82rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--cream-muted); margin-bottom: 0.35rem;
+}
+.timeline-role {
+  font-family: var(--serif); font-size: 1.15rem; font-weight: 400;
+  color: var(--cream); margin-bottom: 0.5rem;
+}
+.timeline-detail { font-size: 0.92rem; color: var(--cream-muted); line-height: 1.65; }
+.education-block { margin-top: 3rem; padding-top: 3rem; border-top: 1px solid var(--border); }
+
+.section-divider { margin: 2.5rem 0; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+
+@media (max-width: 900px) {
+  .section-header { padding: 3rem 2rem 2.5rem; flex-wrap: wrap; gap: 0.5rem; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-left { padding: 3rem 2rem; border-right: none; border-bottom: 1px solid var(--border); }
+  .about-right { padding: 3rem 2rem; }
+  .timeline-item { grid-template-columns: 80px 1fr; gap: 1.25rem; }
+  .timeline-item:not(:last-child)::after { left: 88px; }
+}
+@media (max-width: 540px) {
+  .about-left, .about-right { padding: 2.5rem 1.25rem; }
+  .section-header { padding: 2.5rem 1.25rem 2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Kirti <span>Goel</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="case-studies.html">Case Studies</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="about-wrap">
+  <div class="section-header">
+    <h1 class="section-title">About <em>Kirti</em></h1>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-left">
+      <img
+        src="images/Profile.jpg"
+        alt="Kirti Goel"
+        class="about-portrait"
+        onerror="this.outerHTML='<div style=&quot;width:100%;max-width:280px;aspect-ratio:3/4;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:4rem;color:var(--border-mid);margin-bottom:2.5rem;&quot;>KG</div>'"
+      >
+      <p class="about-intro">
+        I design products that earn trust — through <em>clarity, intent,</em> and a deep understanding of people.
+      </p>
+      <p class="about-body">
+        I'm a strategic design leader with 15+ years driving end-to-end product design — from 0-to-1 startup launches to enterprise-scale AI and financial platforms. I've built and led UX teams, shaped product roadmaps, and brought design into the room where it matters: early, often, and with a clear point of view.
+      </p>
+      <p class="about-body">
+        I'm currently based in Doha, consulting and mentoring while exploring my next full-time chapter. My career spans Silicon Valley, Bangalore, Mumbai, and Doha — working with teams at the Digital Incubation Center (MCIT) and consulting independently. I hold a Harvard Business School certification in AI for Leaders, and I'm particularly interested in how generative AI is reshaping the way people interact with information and systems.
+      </p>
+      <p class="about-body">
+        I believe the best UX is invisible — it removes friction so quietly that users never notice the design, only the outcome.
+      </p>
+
+      <div class="section-divider">
+        <span class="edu-label">Competencies</span>
+        <p class="about-body" style="margin-bottom:0.75rem;">
+          <strong style="color:var(--cream);font-weight:600;">Design &amp; Research —</strong> End-to-End Product Design, UX/UI Architecture, Rapid Prototyping, Usability Testing, Generative &amp; Evaluative Research, User Journeys, Design Systems.
+        </p>
+        <p class="about-body" style="margin-bottom:0;">
+          <strong style="color:var(--cream);font-weight:600;">Strategy &amp; Leadership —</strong> Zero-to-One Product Development, Agile/Scrum, Cross-Functional Team Leadership, Stakeholder Alignment, Product Strategy, Go-to-Market Support.
+        </p>
+      </div>
+
+      <div class="section-divider">
+        <span class="edu-label">Tools</span>
+        <p class="about-body" style="margin-bottom:2rem;">Figma · Miro · Jira · UserTesting · Google Analytics</p>
+        <span class="edu-label">Recognition</span>
+        <p class="about-body" style="margin-bottom:0.5rem;">Extra Mile Award — Drishti Technologies, Oct 2022</p>
+        <p class="about-body" style="margin-bottom:2rem;">Winner — Kyocera Wireless India Design Competition, 2006</p>
+        <span class="edu-label">Certification</span>
+        <p class="about-body" style="margin-bottom:0;">AI for Leaders — Harvard Business School Online</p>
+      </div>
+    </div>
+
+    <div class="about-right">
+      <ul class="timeline">
+        <li class="timeline-item">
+          <span class="timeline-year">Jan 2024 –<br>Present</span>
+          <div class="timeline-content">
+            <p class="timeline-company">Independent Consulting · Doha, Qatar</p>
+            <p class="timeline-role">Career Sabbatical &amp; Consulting</p>
+            <p class="timeline-detail">Planned pause for international relocation and maternity leave. Founded Tray Design and Strategy, pitching end-to-end UX consulting services. Mentoring UX designers and product teams at the Digital Incubation Center (DIC), MCIT.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">Feb 2023 –<br>Dec 2023</span>
+          <div class="timeline-content">
+            <p class="timeline-company">Weav.ai · Remote, Mumbai</p>
+            <p class="timeline-role">UX Lead</p>
+            <p class="timeline-detail">Partnered with the CEO and founding team to lead UX strategy for an enterprise AI copilot. Spearheaded end-to-end UX/UI for the inaugural MVP — launched within 6 months. Defined and standardised the design system and UI components for seamless engineering handoff.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">Nov 2020 –<br>Jan 2023</span>
+          <div class="timeline-content">
+            <p class="timeline-company">Drishti Technologies · Bangalore &amp; Mumbai</p>
+            <p class="timeline-role">UX Manager and Lead</p>
+            <p class="timeline-detail">Led a team of 5 designers building enterprise software for the manufacturing sector. Architected ML engineering workflows — increasing model fine-tuning efficiency by 8× and saving ~20hrs/month. Overhauled customer onboarding for a 4× speed improvement and 10% churn reduction.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">Aug 2019 –<br>Sep 2020</span>
+          <div class="timeline-content">
+            <p class="timeline-company">eCHIBA Technologies · Mumbai</p>
+            <p class="timeline-role">UX Architect</p>
+            <p class="timeline-detail">Directed all design initiatives for a zero-to-one B2B project collaboration tool. Owned the complete product lifecycle from concept to beta, delivering 10+ core features on schedule. Crafted the brand's visual identity and a scalable design system from scratch.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">Dec 2016 –<br>Feb 2019</span>
+          <div class="timeline-content">
+            <p class="timeline-company">Axis Bank · Mumbai</p>
+            <p class="timeline-role">UX Manager and Lead</p>
+            <p class="timeline-detail">Steered UX for the Axis ASAP product line — 500,000+ app downloads and a manifold increase in account openings. Optimised critical mobile flows (funds transfer, bill pay, credit card) increasing transaction rates by 20%. Pioneered the bank's voice-activated banking interface via Amazon Alexa.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">Jul 2014 –<br>Feb 2016</span>
+          <div class="timeline-content">
+            <p class="timeline-company">NetApp Inc · Bangalore</p>
+            <p class="timeline-role">Interaction Designer</p>
+            <p class="timeline-detail">Redesigned the ONTAP Workflow Automation software — translating complex IT administrator workflows into intuitive UI patterns. Strategic UX audits improved product usability and contributed to increased enterprise customer retention.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">Oct 2011 –<br>Jun 2014</span>
+          <div class="timeline-content">
+            <p class="timeline-company">frogDesign (Aricent) · Bangalore</p>
+            <p class="timeline-role">Interaction Designer</p>
+            <p class="timeline-detail">Delivered premium mobile (iOS, Android) and web applications for global Fortune 500 clients including AT&amp;T and ABB. Led generative user research, usability testing, and synthesis to inform high-fidelity prototypes.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">Feb 2009 –<br>Jun 2011</span>
+          <div class="timeline-content">
+            <p class="timeline-company">TeleNav Inc · Silicon Valley, US</p>
+            <p class="timeline-role">Interaction Designer</p>
+            <p class="timeline-detail">Designed location-based mobile applications — OnMyWay and Whereboutz — integrating complex GPS and social networking features into seamless mobile UI.</p>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <span class="timeline-year">Jul 2008 –<br>Oct 2008</span>
+          <div class="timeline-content">
+            <p class="timeline-company">PayPal Inc · Silicon Valley, US</p>
+            <p class="timeline-role">Interaction Designer</p>
+            <p class="timeline-detail">Designed the PayPal iOS application — an early and formative experience in mobile-first financial product design.</p>
+          </div>
+        </li>
+      </ul>
+
+      <div class="education-block">
+        <span class="edu-label">Education</span>
+        <div class="edu-item">
+          <p class="edu-school">Georgia Institute of Technology · Atlanta, GA</p>
+          <p class="edu-degree">MS Human-Computer Interaction · 2006–2008</p>
+          <p class="edu-degree" style="margin-top:0.25rem;font-style:italic;">Graduate Research Assistant, Synaesthetic Media Lab</p>
+        </div>
+        <div class="edu-item">
+          <p class="edu-school">Indian Institute of Technology (IIT) · Guwahati</p>
+          <p class="edu-degree">Bachelor of Design, Visual Communication · 2002–2006</p>
+          <p class="edu-degree" style="margin-top:0.25rem;font-style:italic;">Interned at Media Labs Asia, IIT Bombay</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /about-wrap -->
+
+  <footer>
+    <span class="footer-name">Kirti Goel — UX Leader</span>
+    <span class="footer-copy">© 2026 All Rights Reserved</span>
+  </footer>
+
+</div>
+
+<div class="nav-overlay" id="navOverlay">
+  <button class="nav-overlay-close" id="navOverlayClose">&#x2715;</button>
+  <ul class="nav-overlay-links">
+    <li><a href="index.html" class="nav-overlay-link">Home</a></li>
+    <li><a href="case-studies.html" class="nav-overlay-link">Case Studies</a></li>
+    <li><a href="services.html" class="nav-overlay-link">Services</a></li>
+    <li><a href="about.html" class="nav-overlay-link active">About</a></li>
+    <li><a href="work.html" class="nav-overlay-link">Work</a></li>
+    <li><a href="contact.html" class="nav-overlay-link">Contact</a></li>
+  </ul>
+</div>
+<script>
+  const _nh = document.getElementById('navHamburger');
+  const _no = document.getElementById('navOverlay');
+  const _nc = document.getElementById('navOverlayClose');
+  function openNav()  { _no.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeNav() { _no.classList.remove('open'); document.body.style.overflow = ''; }
+  _nh.addEventListener('click', openNav);
+  _nc.addEventListener('click', closeNav);
+  _no.addEventListener('click', e => { if (e.target === _no) closeNav(); });
+  document.querySelectorAll('.nav-overlay-link').forEach(l => l.addEventListener('click', closeNav));
+</script>
+</body>
+</html>

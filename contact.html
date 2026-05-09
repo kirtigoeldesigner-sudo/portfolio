@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Kirti Goel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg:          #080807;
+    --bg2:         #111110;
+    --bg3:         #1a1a18;
+    --border:      rgba(255,255,255,0.08);
+    --border-mid:  rgba(255,255,255,0.15);
+    --cream:       #F0E9DC;
+    --cream-muted: #A89F92;
+    --accent:      #C85F3A;
+    --accent-warm: #D4834A;
+    --gold:        #A8894F;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans:  'Syne', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-size: 16px; line-height: 1.6; min-height: 100vh; }
+  img { display: block; max-width: 100%; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4rem; height: 72px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,7,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; letter-spacing: 0.05em; color: var(--cream); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream-muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+/* ── Hamburger & Overlay ── */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--cream); }
+.nav-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(8,8,7,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  flex-direction: column; align-items: center; justify-content: center;
+}
+.nav-overlay.open { display: flex; }
+.nav-overlay-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none; color: var(--cream-muted);
+  font-size: 1.8rem; cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.nav-overlay-close:hover { color: var(--cream); }
+.nav-overlay-links { list-style: none; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
+.nav-overlay-link {
+  display: block; width: 100%; text-align: center;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--border);
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-overlay-link:first-child { border-top: 1px solid var(--border); }
+.nav-overlay-link:hover, .nav-overlay-link.active { color: var(--cream); }
+
+/* ── PAGE WRAP ── */
+.page-wrap { padding-top: 72px; min-height: 100vh; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-name { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--cream-muted); }
+.footer-copy { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-muted); opacity: 0.5; }
+
+@media (max-width: 900px) {
+  nav { padding: 0 2rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.4rem; text-align: center; }
+}
+@media (max-width: 540px) {
+  nav { padding: 0 1.25rem; }
+  footer { padding: 1.25rem 1.25rem; }
+}
+
+
+/* ── CONTACT ── */
+.contact-wrap {
+  display: flex; flex-direction: column; justify-content: center;
+  min-height: calc(100vh - 72px - 80px);
+  max-width: 720px; margin: 0 auto; padding: 6rem 4rem;
+}
+.contact-tag {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent); display: flex; align-items: center; gap: 10px; margin-bottom: 2rem;
+}
+.contact-tag::before { content: ''; width: 28px; height: 1px; background: var(--accent); display: block; }
+.contact-headline {
+  font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300; line-height: 1.1; margin-bottom: 1.5rem; color: var(--cream);
+}
+.contact-headline em { font-style: italic; color: var(--accent-warm); }
+.contact-sub {
+  font-size: 1.05rem; color: var(--cream-muted); line-height: 1.75;
+  margin-bottom: 3rem; max-width: 520px;
+}
+.contact-links { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+.contact-links li a {
+  display: flex; align-items: center; gap: 1.25rem;
+  font-size: 1.05rem; color: var(--cream-muted); text-decoration: none;
+  transition: color 0.2s; letter-spacing: 0.02em;
+}
+.contact-links li a:hover { color: var(--cream); }
+.link-icon {
+  width: 40px; height: 40px; border: 1px solid var(--border-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; font-weight: 700; color: var(--accent);
+  flex-shrink: 0; transition: background 0.2s, border-color 0.2s;
+}
+.contact-links li a:hover .link-icon {
+  background: var(--accent); border-color: var(--accent); color: var(--cream);
+}
+
+@media (max-width: 900px) {
+  .contact-wrap { padding: 4rem 2rem; }
+}
+@media (max-width: 540px) {
+  .contact-wrap { padding: 3rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Kirti <span>Goel</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="case-studies.html">Case Studies</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="contact-wrap">
+    <div class="contact-tag">Get in Touch</div>
+    <h1 class="contact-headline">
+      Let's build something <em>meaningful</em> together.
+    </h1>
+    <p class="contact-sub">
+      Whether you're a startup looking for a UX strategist, a growing company needing to level up your product experience, or an enterprise team seeking a design leader — I'd love to hear from you.
+    </p>
+    <ul class="contact-links">
+      <li>
+        <a href="mailto:kirtigoel.designer@gmail.com">
+          <span class="link-icon">@</span>
+          kirtigoel.designer@gmail.com
+        </a>
+      </li>
+      <li>
+        <a href="tel:+97472047230">
+          <span class="link-icon">&#9990;</span>
+          +974 720 47230 &nbsp;&middot;&nbsp; Doha, Qatar
+        </a>
+      </li>
+      <li>
+        <a href="https://www.linkedin.com/in/kirtigoel/" target="_blank" rel="noopener">
+          <span class="link-icon">in</span>
+          linkedin.com/in/kirtigoel
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    <span class="footer-name">Kirti Goel — UX Leader</span>
+    <span class="footer-copy">© 2026 All Rights Reserved</span>
+  </footer>
+
+</div>
+
+<div class="nav-overlay" id="navOverlay">
+  <button class="nav-overlay-close" id="navOverlayClose">&#x2715;</button>
+  <ul class="nav-overlay-links">
+    <li><a href="index.html" class="nav-overlay-link">Home</a></li>
+    <li><a href="case-studies.html" class="nav-overlay-link">Case Studies</a></li>
+    <li><a href="services.html" class="nav-overlay-link">Services</a></li>
+    <li><a href="about.html" class="nav-overlay-link">About</a></li>
+    <li><a href="work.html" class="nav-overlay-link">Work</a></li>
+    <li><a href="contact.html" class="nav-overlay-link active">Contact</a></li>
+  </ul>
+</div>
+<script>
+  const _nh = document.getElementById('navHamburger');
+  const _no = document.getElementById('navOverlay');
+  const _nc = document.getElementById('navOverlayClose');
+  function openNav()  { _no.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeNav() { _no.classList.remove('open'); document.body.style.overflow = ''; }
+  _nh.addEventListener('click', openNav);
+  _nc.addEventListener('click', closeNav);
+  _no.addEventListener('click', e => { if (e.target === _no) closeNav(); });
+  document.querySelectorAll('.nav-overlay-link').forEach(l => l.addEventListener('click', closeNav));
+</script>
+</body>
+</html>

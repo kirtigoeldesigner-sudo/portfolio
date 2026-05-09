@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MomInsight — AI Nutrition App, Concept to Prototype — Kirti Goel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #080807;
+  --bg2:          #111110;
+  --bg3:          #1a1a18;
+  --bg4:          #222220;
+  --border:       rgba(255,255,255,0.08);
+  --border-mid:   rgba(255,255,255,0.14);
+  --cream:        #F0E9DC;
+  --cream-muted:  #A89F92;
+  --cream-dim:    #6e6860;
+  --cream-light:  #F5F0E8;
+  --accent:       #C85F3A;
+  --accent-warm:  #D4834A;
+  --gold:         #A8894F;
+  --serif:        'Cormorant Garamond', Georgia, serif;
+  --sans:         'Syne', system-ui, sans-serif;
+  --sidebar-w:    220px;
+  --content-max:  760px;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-size: 15px; line-height: 1.7; }
+img { display: block; max-width: 100%; height: auto; }
+
+.layout { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed; top: 0; left: 0;
+  width: var(--sidebar-w); height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; z-index: 50;
+  overflow-y: auto; scrollbar-width: none;
+}
+.sidebar::-webkit-scrollbar { display: none; }
+.sidebar-header { padding: 28px 20px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-name { font-family: var(--serif); font-size: 1.25rem; font-weight: 300; color: var(--cream); letter-spacing: 0.02em; line-height: 1.2; }
+.sidebar-name span { color: var(--accent); }
+.sidebar-role { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-muted); margin-top: 4px; }
+.sidebar-back { display: flex; align-items: center; gap: 7px; padding: 14px 20px; border-bottom: 1px solid var(--border); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-muted); text-decoration: none; transition: color 0.2s; flex-shrink: 0; }
+.sidebar-back:hover { color: var(--cream); }
+.sidebar-back svg { opacity: 0.6; transition: opacity 0.2s; }
+.sidebar-back:hover svg { opacity: 1; }
+.sidebar-nav { flex: 1; padding: 12px 0 20px; }
+.sidebar-nav-label { padding: 8px 20px 6px; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); }
+.nav-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 20px 7px 18px; cursor: pointer; text-decoration: none; border-left: 2px solid transparent; transition: border-color 0.15s, background 0.15s; }
+.nav-item:hover { background: rgba(255,255,255,0.03); }
+.nav-item.active { border-left-color: var(--accent); background: rgba(200,95,58,0.07); }
+.nav-num { font-size: 0.65rem; font-weight: 700; color: var(--cream-dim); flex-shrink: 0; width: 22px; padding-top: 2px; letter-spacing: 0.05em; transition: color 0.15s; }
+.nav-item.active .nav-num { color: var(--accent); }
+.nav-label { font-size: 0.72rem; color: var(--cream-muted); line-height: 1.4; transition: color 0.15s; }
+.nav-item.active .nav-label, .nav-item:hover .nav-label { color: var(--cream); }
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-cs-tag { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.sidebar-next { display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: var(--cream-muted); font-size: 0.7rem; line-height: 1.4; transition: color 0.2s; }
+.sidebar-next:hover { color: var(--cream); }
+
+/* ── Sticky Bar ── */
+.sticky-bar { position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 52px; background: rgba(8,8,7,0.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; z-index: 40; }
+.sticky-bar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.sticky-bar-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+.sticky-bar-divider { width: 1px; height: 14px; background: var(--border-mid); flex-shrink: 0; }
+.sticky-bar-title { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sticky-bar-section { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; color: var(--cream-muted); white-space: nowrap; flex-shrink: 0; opacity: 0; transform: translateY(4px); transition: opacity 0.3s, transform 0.3s; }
+.sticky-bar-section.visible { opacity: 1; transform: translateY(0); }
+.scroll-progress { position: absolute; bottom: 0; left: 0; height: 2px; width: 0%; background: var(--accent); transition: width 0.08s linear; }
+
+/* ── Main ── */
+.main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; padding-top: 52px; }
+section[id] { scroll-margin-top: 68px; }
+
+.hero-img { width: 100%; max-height: 420px; overflow: hidden; }
+.hero-img img { width: 100%; height: 420px; object-fit: cover; object-position: center 20%; display: block; }
+
+.cover { max-width: var(--content-max); margin: 0 auto; padding: 40px 32px 0; }
+.cs-tag { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.cs-tag::before { content: ''; width: 28px; height: 1px; background: var(--accent); display: block; }
+.cs-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.1; color: var(--cream); letter-spacing: -0.01em; margin-bottom: 10px; }
+.cs-subtitle { font-size: 0.9rem; color: var(--cream-muted); line-height: 1.6; margin-bottom: 28px; }
+
+/* ── Concept badge ── */
+.concept-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,95,58,0.1); border: 1px solid rgba(200,95,58,0.3); border-radius: 4px; padding: 6px 14px; margin-bottom: 28px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-warm); }
+
+.meta-strip { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border-mid); border-radius: 6px; overflow: hidden; margin-bottom: 28px; }
+.meta-cell { background: var(--bg3); padding: 14px 16px; border-right: 1px solid var(--border); }
+.meta-cell:last-child { border-right: none; }
+.meta-key { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 5px; }
+.meta-val { font-size: 0.82rem; font-weight: 600; color: var(--cream); }
+
+.impact-bar { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border-mid); border-radius: 6px; overflow: hidden; margin-bottom: 48px; }
+.impact-cell { background: var(--bg3); padding: 20px 14px; text-align: center; border-right: 1px solid var(--border); }
+.impact-cell:last-child { border-right: none; }
+.impact-num { font-family: var(--serif); font-size: 2.4rem; font-weight: 400; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+.impact-lbl { font-size: 0.67rem; color: var(--cream-muted); line-height: 1.5; }
+
+.section { max-width: var(--content-max); margin: 0 auto; padding: 48px 32px; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; padding-bottom: 80px; }
+.section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid rgba(200,95,58,0.25); }
+.section-num { font-family: var(--sans); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; color: var(--accent); flex-shrink: 0; }
+.section-title { font-family: var(--serif); font-size: 1.75rem; font-weight: 300; color: var(--cream); line-height: 1.15; }
+.subsection-title { font-family: var(--sans); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-warm); margin: 32px 0 12px; }
+.role-tag { display: inline-block; font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); border: 1px solid var(--border-mid); border-radius: 3px; padding: 3px 8px; margin-bottom: 20px; }
+.body-text { font-size: 1rem; color: var(--cream-muted); line-height: 1.8; margin-bottom: 16px; }
+
+/* ── Tool stack tag ── */
+.tool-stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
+.tool-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-muted); background: var(--bg3); border: 1px solid var(--border-mid); border-radius: 3px; padding: 4px 10px; }
+
+.insight-callout { background: rgba(255,255,255,0.03); border: 1px solid var(--accent); border-radius: 8px; padding: 1.1rem 1.4rem; margin: 1.6rem 0; }
+.insight-callout p { font-size: 1.25rem; font-weight: 400; font-family: var(--serif); font-style: italic; color: var(--cream-light); line-height: 1.75; margin: 0 0 0.5rem 0; }
+.insight-callout p:last-child { margin-bottom: 0; }
+.insight-callout p strong { font-weight: 700; font-style: normal; color: var(--accent); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--sans); display: block; margin-bottom: 0.4rem; }
+
+.img-full { margin: 28px 0 8px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+.img-full img { width: 100%; height: auto; max-height: 680px; object-fit: contain; background: var(--bg3); display: block; cursor: zoom-in; transition: opacity 0.2s; }
+.img-full img:hover { opacity: 0.92; }
+.img-caption { font-size: 0.78rem; color: var(--cream-muted); font-style: italic; text-align: center; margin-bottom: 20px; line-height: 1.5; }
+
+.img-pair-labeled { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 28px 0 20px; }
+.img-pair-labeled-item { border-radius: 4px; overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; }
+.img-pair-labeled-item img { width: 100%; height: 540px; object-fit: contain; background: var(--bg3); display: block; cursor: zoom-in; transition: opacity 0.2s; }
+.img-pair-labeled-item img:hover { opacity: 0.92; }
+.img-pair-labeled-item .img-caption { border-top: 1px solid var(--border); margin: 0; padding: 8px 12px; text-align: left; background: var(--bg3); }
+
+.img-triple-labeled { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 28px 0 20px; }
+.img-triple-labeled-item { border-radius: 4px; overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; }
+.img-triple-labeled-item img { width: 100%; height: 280px; object-fit: cover; object-position: top; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+.img-triple-labeled-item img:hover { opacity: 0.92; }
+.img-triple-labeled-item .img-caption { border-top: 1px solid var(--border); margin: 0; padding: 8px 12px; text-align: left; background: var(--bg3); }
+
+.outcomes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+.outcome-group { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+.outcome-group-title { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+
+.section-rule { border: none; border-top: 1px solid var(--border); margin: 40px 0 28px; }
+.closing-note { font-size: 0.82rem; color: var(--cream-dim); font-style: italic; text-align: center; line-height: 1.7; }
+.closing-note a { color: var(--accent); text-decoration: none; font-style: normal; font-weight: 600; }
+.closing-note a:hover { color: var(--accent-warm); }
+
+.lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 90vh; object-fit: contain; border-radius: 4px; box-shadow: 0 24px 80px rgba(0,0,0,0.6); cursor: default; }
+.lightbox-close { position: absolute; top: 20px; right: 24px; font-size: 1.8rem; color: rgba(255,255,255,0.5); cursor: pointer; line-height: 1; background: none; border: none; transition: color 0.2s; }
+.lightbox-close:hover { color: white; }
+
+.mobile-hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 4px; margin-right: 8px; flex-shrink: 0; }
+.mobile-hamburger span { display: block; width: 18px; height: 2px; background: var(--cream); }
+.sticky-back { display: none; align-items: center; gap: 6px; color: var(--cream-muted); text-decoration: none; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.2s; flex-shrink: 0; margin-right: 12px; }
+.sticky-back svg { opacity: 0.7; }
+.sticky-back:hover { color: var(--cream); }
+
+.mobile-nav-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(8,8,7,0.97); backdrop-filter: blur(20px); flex-direction: column; overflow-y: auto; }
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-header { padding: 20px 24px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.mobile-nav-close { background: none; border: none; color: var(--cream-muted); font-size: 1.6rem; cursor: pointer; line-height: 1; transition: color 0.2s; }
+.mobile-nav-close:hover { color: var(--cream); }
+.mobile-nav-name { font-family: var(--serif); font-size: 1.25rem; font-weight: 300; }
+.mobile-nav-name span { color: var(--accent); }
+.mobile-nav-back { display: flex; align-items: center; gap: 8px; padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-muted); text-decoration: none; transition: color 0.2s; flex-shrink: 0; }
+.mobile-nav-back:hover { color: var(--cream); }
+.mobile-nav-label { padding: 16px 24px 6px; flex-shrink: 0; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); }
+.mobile-nav-section { display: flex; align-items: center; gap: 12px; padding: 13px 24px; border-bottom: 1px solid var(--border); text-decoration: none; transition: background 0.15s; flex-shrink: 0; }
+.mobile-nav-section:hover { background: rgba(255,255,255,0.03); }
+.mobile-nav-section-num { font-size: 0.62rem; font-weight: 700; color: var(--cream-dim); width: 22px; flex-shrink: 0; }
+.mobile-nav-section-label { font-size: 0.78rem; color: var(--cream-muted); line-height: 1.4; }
+.mobile-nav-footer { padding: 20px 24px; border-top: 1px solid var(--border); margin-top: auto; flex-shrink: 0; }
+.mobile-nav-next-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.mobile-nav-next-link { font-size: 0.78rem; color: var(--cream-muted); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.mobile-nav-next-link:hover { color: var(--cream); }
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .mobile-hamburger { display: flex; }
+  .sticky-back { display: flex; }
+  .sticky-bar { left: 0; padding: 0 16px; }
+  .sticky-bar-divider, .sticky-bar-title, .sticky-bar-section { display: none; }
+  .main { margin-left: 0; padding-top: 52px; }
+  .cover { padding: 28px 20px 0; }
+  .section { padding: 36px 20px; }
+  .section-title { font-size: 1.5rem; }
+  .hero-img img { height: 220px; }
+  .cs-title { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+}
+@media (max-width: 680px) {
+  .meta-strip, .impact-bar { grid-template-columns: repeat(2, 1fr); }
+  .img-pair-labeled { grid-template-columns: 1fr; }
+  .img-triple-labeled { grid-template-columns: 1fr; }
+  .outcomes-grid { grid-template-columns: 1fr; }
+  .impact-num { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sticky Bar -->
+  <div class="sticky-bar">
+    <div class="sticky-bar-left">
+      <a class="sticky-back" href="case-studies.html">
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M8 1L3 6L8 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        All Case Studies
+      </a>
+      <button class="mobile-hamburger" id="mobileHamburger"><span></span><span></span><span></span></button>
+      <span class="sticky-bar-label">Case Study D</span>
+      <div class="sticky-bar-divider"></div>
+      <span class="sticky-bar-title">MomInsight — Concept to Prototype</span>
+    </div>
+    <span class="sticky-bar-section" id="stickySection"></span>
+    <div class="scroll-progress" id="scrollProgress"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-name">Kirti <span>Goel</span></div>
+      <div class="sidebar-role">UX Manager &amp; Lead</div>
+    </div>
+    <a href="case-studies.html" class="sidebar-back">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1L3 6L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>All Case Studies</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-label">Sections</div>
+      <a class="nav-item active" href="#s01"><span class="nav-num">01</span><span class="nav-label">The Problem</span></a>
+      <a class="nav-item" href="#s02"><span class="nav-num">02</span><span class="nav-label">Research & Definition</span></a>
+      <a class="nav-item" href="#s03"><span class="nav-num">03</span><span class="nav-label">How It Was Built</span></a>
+      <a class="nav-item" href="#s04"><span class="nav-num">04</span><span class="nav-label">The Product</span></a>
+      <a class="nav-item" href="#s05"><span class="nav-num">05</span><span class="nav-label">What's Next</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-cs-tag">Also</div>
+      <a class="sidebar-next" href="case-study-a.html"><span>From Design Debt to Design System →</span></a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="hero-img">
+      <img src="images/CaseStudy4/MomInsight_screen_04.jpg" alt="MomInsight — daily meal plan view">
+    </div>
+
+    <div class="cover">
+      <div class="cs-tag">Case Study D &nbsp;·&nbsp; Personal Project</div>
+      <h1 class="cs-title">MomInsight — From Prompt to Working Prototype</h1>
+      <p class="cs-subtitle">An AI-powered meal planning and nutrition app for mothers of young children — conceived, defined, and built solo using modern AI tooling. Concept to working prototype in one sprint.</p>
+      <div class="concept-badge">⬡ Concept &amp; Prototype — not yet validated with real users</div>
+
+      <div class="meta-strip">
+        <div class="meta-cell"><div class="meta-key">Type</div><div class="meta-val">Personal Project</div></div>
+        <div class="meta-cell"><div class="meta-key">Role</div><div class="meta-val">Solo — Product & Design</div></div>
+        <div class="meta-cell"><div class="meta-key">Year</div><div class="meta-val">2026</div></div>
+        <div class="meta-cell"><div class="meta-key">Platform</div><div class="meta-val">Consumer Mobile · Web</div></div>
+      </div>
+
+      <div class="impact-bar">
+        <div class="impact-cell">
+          <div class="impact-num">1</div>
+          <div class="impact-lbl">Person — full product cycle</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">5</div>
+          <div class="impact-lbl">Core features prototyped</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">0→live</div>
+          <div class="impact-lbl">Concept to working app</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S01 Problem -->
+    <section class="section" id="s01">
+      <div class="section-header">
+        <span class="section-num">01 —</span>
+        <h2 class="section-title">The Problem</h2>
+      </div>
+
+      <div class="subsection-title">(a) What parents actually struggle with</div>
+      <p class="body-text">Parents are overwhelmed by conflicting nutrition advice from paediatricians, social media, and family. They struggle to apply general guidance to a specific child with specific preferences, restrictions, and developmental needs.</p>
+      <p class="body-text">Research shows up to 50% of toddlers go through picky eating phases. Parents know children typically need 10–15 exposures to a new food before accepting it — but tracking those exposures while managing daily life is nearly impossible. Most parents give up after two or three rejections.</p>
+
+      <div class="subsection-title">(b) The four pain points</div>
+      <div class="insight-callout">
+        <p><strong>Information overload</strong> — Conflicting advice from paediatricians, online resources, and family. Parents can't filter signal from noise for their specific child.</p>
+        <p><strong>Picky eating</strong> — No system to track food exposures, adapt gradually, or know when to try again. Most parents default to the same five meals.</p>
+        <p><strong>Mental load</strong> — Simultaneously balancing nutrition, dietary restrictions, budget, prep time, and variety across days and weeks is cognitively exhausting.</p>
+        <p><strong>No visibility</strong> — Parents can't see whether their child is actually meeting nutritional requirements. They oscillate between complacency and anxiety without data.</p>
+      </div>
+    </section>
+
+    <!-- S02 Research & Definition -->
+    <section class="section" id="s02">
+      <div class="section-header">
+        <span class="section-num">02 —</span>
+        <h2 class="section-title">Research &amp; Definition</h2>
+      </div>
+
+      <div class="subsection-title">(a) User research approach</div>
+      <p class="body-text">I drafted five Reddit post variations targeting different mum communities — each written to surface a specific pain point without promoting a solution. The posts were designed to validate whether the problem was real and widespread before building anything. Reddit's subreddit restrictions prevented posting.</p>
+      <p class="body-text">Each variation targeted a distinct user type: the overwhelmed first-time mum, the picky eater parent, the dietary-restrictions parent (vegetarian/vegan families), the time-strapped working parent, and a casual validator open question. The responses each version would attract would reveal which pain point had the most urgency.</p>
+
+      <div class="subsection-title">(b) Personas defined</div>
+      <div class="insight-callout">
+        <p><strong>Sarah — First-time mum</strong> — Anxious about getting nutrition right from the start. Needs reassurance and clear, actionable guidance, not more information to parse.</p>
+        <p><strong>Priya — Managing multiple children</strong> — Coordinating different ages, different preferences, different developmental stages simultaneously. Needs a system, not just a recipe.</p>
+        <p><strong>Michael — Dietary-conscious dad</strong> — Raising children vegetarian or vegan. Constantly worried about iron, B12, protein. Needs data-backed confidence, not guesswork.</p>
+      </div>
+
+      <div class="subsection-title">(c) Product definition</div>
+      <p class="body-text">I wrote a full PRD covering problem statement, target market, core feature requirements, technical architecture, monetisation strategy, and a phased roadmap. The PRD preceded the build.</p>
+      <p class="body-text">Key product decisions made at this stage: freemium model at $9.99/month, 5 core features for MVP, USDA nutrition guidelines as the data backbone, and a picky eater tracking system as the primary differentiator versus existing meal planning apps.</p>
+    </section>
+
+    <!-- S03 How It Was Built -->
+    <section class="section" id="s03">
+      <div class="section-header">
+        <span class="section-num">03 —</span>
+        <h2 class="section-title">How It Was Built</h2>
+      </div>
+
+      <div class="subsection-title">(a) The toolchain</div>
+      <div class="tool-stack">
+        <span class="tool-tag">Claude — Product thinking & PRD</span>
+        <span class="tool-tag">Claude — Research framework</span>
+        <span class="tool-tag">Replit — App build & deployment</span>
+        <span class="tool-tag">React + TypeScript — Frontend</span>
+        <span class="tool-tag">USDA Nutrition API — Data</span>
+      </div>
+      <p class="body-text">Claude was used to structure the product thinking — framing the problem, writing the PRD, defining personas, and drafting the research posts. Replit was used to build and deploy the working prototype. The entire stack — product definition to live app — was built without a separate development resource.</p>
+
+      <div class="subsection-title">(b) What was built</div>
+      <p class="body-text">The prototype is a fully functional web app: routing, state management, dietary mode switching (vegetarian/non-vegetarian), USDA nutrition data integration, meal logging via photo, and a picky eater tracking system.</p>
+
+      <div class="subsection-title">(c) Build sequence</div>
+      <p class="body-text">Problem definition → User research framework → PRD → Feature scoping → App architecture → Frontend build → Nutrition data integration → Picky eater system → Deployment. </p>
+    </section>
+
+    <!-- S04 The Product -->
+    <section class="section" id="s04">
+      <div class="section-header">
+        <span class="section-num">04 —</span>
+        <h2 class="section-title">The Product</h2>
+      </div>
+
+      <div class="subsection-title">(a) Daily meal plan — home screen</div>
+      <p class="body-text">The home screen shows today's meals — breakfast, lunch, snack, dinner — personalised to the child's age, dietary mode, and nutritional needs. Parents can mark a meal as eaten, swap it for an alternative, or log it via photo. The AI adjusts tomorrow's plan based on what was actually consumed today.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy4/MomInsight_screen_04.jpg" alt="MomInsight home — today's meal plan" loading="lazy">
+          <p class="img-caption">Today's meal plan — mark eaten, swap, or log via photo</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy4/MomInsight_screen_03.jpg" alt="MomInsight home — meal detail and nutrition focus" loading="lazy">
+          <p class="img-caption">Meal detail — nutrition focus tags per meal</p>
+        </div>
+      </div>
+
+      <div class="subsection-title">(b) Weekly plan &amp; USDA nutrition</div>
+      <p class="body-text">The weekly view shows the full meal plan at a glance with USDA nutrition tracking integrated. Parents can see whether their child is on track for key nutrients — iron, calcium, protein, fibre — across the week, not just per meal. Dietary mode (vegetarian/non-vegetarian) is switchable at any time and the plan regenerates accordingly.</p>
+
+      <div class="img-full">
+        <img src="images/CaseStudy4/MomInsight_screen_05.jpg" alt="Weekly meal plan with USDA nutrition tracking" loading="lazy">
+      </div>
+      <p class="img-caption">Weekly plan — USDA-aligned nutrition tracking by day</p>
+
+      <div class="subsection-title">(c) Recipes</div>
+      <p class="body-text">Each meal links to a full recipe — ingredient list, prep time, nutritional breakdown, and age-suitability. Recipes are tagged by nutritional focus (brain, energy, growth, immunity) so parents understand why a meal is in the plan, not just what to cook.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy4/MomInsight_screen_06.jpg" alt="Recipe detail — ingredients and nutritional breakdown" loading="lazy">
+          <p class="img-caption">Recipe detail — ingredients, prep time, nutrition</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy4/MomInsight_screen_09.jpg" alt="Recipe — age suitability and focus tags" loading="lazy">
+          <p class="img-caption">Recipe — age suitability and nutrition focus tags</p>
+        </div>
+      </div>
+
+      <div class="subsection-title">(d) Picky eater management</div>
+      <p class="body-text">The picky eater system tracks every food offer and rejection. It uses bridge food logic — if a child accepts sweet potato, the system suggests other orange vegetables at the next appropriate interval. Parents can see a child's exposure count per food, what's been rejected, and what's next to try. The 10–15 exposure problem becomes manageable.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy4/MomInsight_screen_07.jpg" alt="Picky eater tracker — food exposure history" loading="lazy">
+          <p class="img-caption">Picky eater tracker — exposure count and status per food</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy4/MomInsight_screen_08.jpg" alt="Picky eater — bridge food suggestions" loading="lazy">
+          <p class="img-caption">Bridge food suggestions — gradual palette expansion</p>
+        </div>
+      </div>
+
+      <div class="subsection-title">(e) Health boosters</div>
+      <p class="body-text">The health screen flags nutrient gaps and suggests specific foods to address them. If calcium is low this week, the app surfaces three quick ways to add it — not a generic warning, but actionable food options matched to the child's preferences and dietary mode.</p>
+
+      <div class="img-full">
+        <img src="images/CaseStudy4/MomInsight_screen_10.jpg" alt="Health boosters — nutrient gap recommendations" loading="lazy">
+      </div>
+      <p class="img-caption">Health boosters — targeted food suggestions for nutrient gaps</p>
+    </section>
+
+    <!-- S05 What's Next -->
+    <section class="section" id="s05">
+      <div class="section-header">
+        <span class="section-num">05 —</span>
+        <h2 class="section-title">What's Next</h2>
+      </div>
+
+      <div class="subsection-title">(a) Validation plan</div>
+      <p class="body-text">The next phase is structured user testing with 10–15 mothers across the three personas. Key questions: does the daily plan feel manageable or overwhelming? Does the picky eater tracker change behaviour? Is USDA data reassuring or anxiety-inducing? The prototype is built to be put in front of real users immediately.</p>
+
+      <div class="subsection-title">(b) What I would iterate on</div>
+      <div class="insight-callout">
+        <p><strong>Onboarding</strong> — The child profile setup needs to feel effortless. Right now it collects necessary data; it needs to feel like a conversation, not a form.</p>
+        <p><strong>Tone</strong> — The app should reduce anxiety, not increase it. Every nutrient gap notification needs to be framed as an opportunity, not a failure. This requires copy testing.</p>
+        <p><strong>Autonomy controls</strong> — The PRD envisions adjustable AI autonomy per feature. The prototype doesn't yet surface this — it's the highest-value design problem remaining.</p>
+      </div>
+
+      <hr class="section-rule">
+      <p class="closing-note">
+        For enterprise product design work, see<br>
+        <a href="case-study-b.html">← Case Study B — From Manual Processes to Workflows</a>
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <div class="mobile-nav-header">
+    <div class="mobile-nav-name">Kirti <span>Goel</span></div>
+    <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+  </div>
+  <a class="mobile-nav-back" href="case-studies.html">← All Case Studies</a>
+  <div class="mobile-nav-label">Sections</div>
+  <a class="mobile-nav-section" href="#s01"><span class="mobile-nav-section-num">01</span><span class="mobile-nav-section-label">The Problem</span></a>
+  <a class="mobile-nav-section" href="#s02"><span class="mobile-nav-section-num">02</span><span class="mobile-nav-section-label">Research & Definition</span></a>
+  <a class="mobile-nav-section" href="#s03"><span class="mobile-nav-section-num">03</span><span class="mobile-nav-section-label">How It Was Built</span></a>
+  <a class="mobile-nav-section" href="#s04"><span class="mobile-nav-section-num">04</span><span class="mobile-nav-section-label">The Product</span></a>
+  <a class="mobile-nav-section" href="#s05"><span class="mobile-nav-section-num">05</span><span class="mobile-nav-section-label">What's Next</span></a>
+  <div class="mobile-nav-footer">
+    <div class="mobile-nav-next-tag">Also</div>
+    <a class="mobile-nav-next-link" href="case-study-a.html">From Design Debt to Design System →</a>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('section[id]');
+const stickyEl = document.getElementById('stickySection');
+const progressBar = document.getElementById('scrollProgress');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navItems.forEach(i => i.classList.remove('active'));
+      const active = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+      if (active) { active.classList.add('active'); active.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+      if (stickyEl) {
+        const t = entry.target.querySelector('.section-title');
+        if (t) { stickyEl.textContent = t.textContent; stickyEl.classList.add('visible'); }
+      }
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px', threshold: 0 });
+sections.forEach(s => observer.observe(s));
+
+window.addEventListener('scroll', () => {
+  const pct = document.documentElement.scrollHeight - window.innerHeight;
+  if (progressBar) progressBar.style.width = (pct > 0 ? (window.scrollY / pct) * 100 : 0) + '%';
+}, { passive: true });
+
+const hamburger = document.getElementById('mobileHamburger');
+const overlay = document.getElementById('mobileNavOverlay');
+const closeBtn = document.getElementById('mobileNavClose');
+function openNav() { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeNav() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+hamburger.addEventListener('click', openNav);
+closeBtn.addEventListener('click', closeNav);
+document.querySelectorAll('.mobile-nav-section, .mobile-nav-back').forEach(l => l.addEventListener('click', closeNav));
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+document.querySelectorAll('.img-full img, .img-pair-labeled-item img, .img-triple-labeled-item img').forEach(img => {
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src; lightboxImg.alt = img.alt;
+    lightbox.classList.add('open'); document.body.style.overflow = 'hidden';
+  });
+});
+function closeLightbox() { lightbox.classList.remove('open'); document.body.style.overflow = ''; }
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>

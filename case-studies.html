@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Studies — Kirti Goel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #080807;
+  --bg2:         #111110;
+  --bg3:         #1a1a18;
+  --border:      rgba(255,255,255,0.08);
+  --border-mid:  rgba(255,255,255,0.15);
+  --cream:       #F0E9DC;
+  --cream-muted: #A89F92;
+  --accent:      #C85F3A;
+  --accent-warm: #D4834A;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Syne', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-size: 16px; line-height: 1.6; min-height: 100vh; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4rem; height: 72px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,7,0.9); backdrop-filter: blur(12px);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; letter-spacing: 0.05em; color: var(--cream); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream-muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--cream); }
+.nav-links a.active { color: var(--cream); }
+
+/* ── PAGE WRAP ── */
+.page-wrap {
+  padding-top: 72px;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.cs-header {
+  padding: 5rem 4rem 3.5rem;
+  border-bottom: 1px solid var(--border);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.cs-header-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.cs-header-tag::before {
+  content: '';
+  display: block;
+  width: 28px; height: 1px;
+  background: var(--accent);
+}
+.cs-header-title {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--cream);
+}
+.cs-header-title em { font-style: italic; color: var(--accent-warm); }
+
+/* ── GRID ── */
+.cs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3.5rem 4rem 6rem;
+}
+
+/* ── CARD ── */
+.cs-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.cs-card:hover {
+  border-color: rgba(200,95,58,0.4);
+  transform: translateY(-4px);
+}
+
+.cs-card-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bg3);
+}
+.cs-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  opacity: 0.82;
+  filter: grayscale(15%);
+  transition: opacity 0.4s, transform 0.5s, filter 0.4s;
+}
+.cs-card:hover .cs-card-img img {
+  opacity: 1;
+  transform: scale(1.04);
+  filter: grayscale(0%);
+}
+
+.cs-card-body {
+  padding: 26px 28px 30px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cs-card-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.cs-card-title {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+
+.cs-card-sub {
+  font-size: 0.82rem;
+  color: var(--cream-muted);
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 22px;
+}
+
+.cs-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+.cs-card-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px 9px;
+}
+
+.cs-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream);
+  transition: gap 0.2s, color 0.2s;
+}
+.cs-card-cta::after { content: "→"; color: var(--accent); }
+.cs-card:hover .cs-card-cta { gap: 12px; color: var(--accent-warm); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-name { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--cream-muted); }
+.footer-copy { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-muted); opacity: 0.5; }
+
+/* ── Hamburger & Overlay ── */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px; background: var(--cream);
+  transition: transform 0.25s, opacity 0.25s;
+}
+.nav-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(8,8,7,0.97); backdrop-filter: blur(20px);
+  flex-direction: column; align-items: center; justify-content: center;
+}
+.nav-overlay.open { display: flex; }
+.nav-overlay-close {
+  position: absolute; top: 24px; right: 28px;
+  background: none; border: none; color: var(--cream-muted);
+  font-size: 1.8rem; cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.nav-overlay-close:hover { color: var(--cream); }
+.nav-overlay-links { list-style: none; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
+.nav-overlay-link {
+  display: block; width: 100%; text-align: center;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--border);
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-muted); text-decoration: none;
+  background: none; border-top: none; border-left: none; border-right: none;
+  cursor: pointer; transition: color 0.2s;
+}
+.nav-overlay-link:first-child { border-top: 1px solid var(--border); }
+.nav-overlay-link:hover, .nav-overlay-link.active { color: var(--cream); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .cs-header { padding: 3rem 1.5rem 2rem; }
+  .cs-grid { grid-template-columns: 1fr; padding: 2rem 1.5rem 3rem; gap: 20px; }
+  @media (min-width: 580px) and (max-width: 768px) { .cs-grid { grid-template-columns: 1fr 1fr; } }
+  .cs-card-title { font-size: 1.3rem; }
+  footer { padding: 1.5rem 1.5rem; flex-direction: column; gap: 0.4rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Kirti <span>Goel</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="case-studies.html" class="active">Case Studies</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="cs-header">
+    <div class="cs-header-tag">Selected Work</div>
+    <h1 class="cs-header-title">Case <em>Studies</em></h1>
+  </div>
+
+  <div class="cs-grid">
+
+    <!-- CASE STUDY A -->
+    <a class="cs-card" href="case-study-a.html">
+      <div class="cs-card-img">
+        <img src="images/CaseStudy1/hero_cover.jpg" alt="From Design Debt to Design System">
+      </div>
+      <div class="cs-card-body">
+        <div class="cs-card-label">Drishti Technologies &nbsp;·&nbsp; Case Study A</div>
+        <h2 class="cs-card-title">From Design Debt to Design System</h2>
+        <p class="cs-card-sub">A full UX overhaul of an enterprise AI SaaS platform for manufacturing — establishing the first UX function, building a design system, and redesigning the end-to-end product experience for four distinct user personas.</p>
+        <div class="cs-card-tags">
+          <span class="cs-card-tag">UX Leadership</span>
+          <span class="cs-card-tag">Design System</span>
+          <span class="cs-card-tag">Research</span>
+          <span class="cs-card-tag">Dashboards</span>
+        </div>
+        <span class="cs-card-cta">Read Case Study</span>
+      </div>
+    </a>
+
+    <!-- CASE STUDY B -->
+    <a class="cs-card" href="case-study-b.html">
+      <div class="cs-card-img">
+        <img src="images/CaseStudy2/Drishti_CoverImage.webp" alt="From Manual Processes on the Factory Floor to Workflows">
+      </div>
+      <div class="cs-card-body">
+        <div class="cs-card-label">Drishti Technologies &nbsp;·&nbsp; Case Study B</div>
+        <h2 class="cs-card-title">From Manual Processes on the Factory Floor to Workflows</h2>
+        <p class="cs-card-sub">Onboarding, ML Setup, RCA & Kaizen — four workflows to close the gap between factory floor and AI platform. Reduced customer onboarding from 8 weeks to 1 week.</p>
+        <div class="cs-card-tags">
+          <span class="cs-card-tag">Onboarding</span>
+          <span class="cs-card-tag">ML Setup</span>
+          <span class="cs-card-tag">RCA</span>
+          <span class="cs-card-tag">Kaizen</span>
+        </div>
+        <span class="cs-card-cta">Read Case Study</span>
+      </div>
+    </a>
+
+    <!-- CASE STUDY C -->
+    <a class="cs-card" href="case-study-c.html">
+      <div class="cs-card-img">
+        <img src="images/CaseStudy3/axisbank_coverimage.png" alt="Redesigning Mobile Banking for 3.5 Million Users">
+      </div>
+      <div class="cs-card-body">
+        <div class="cs-card-label">Axis Bank &nbsp;·&nbsp; Case Study C</div>
+        <h2 class="cs-card-title">Redesigning Mobile Banking for 3.5 Million Users</h2>
+        <p class="cs-card-sub">A full UX overhaul of Axis Bank's mobile app — restructuring 90+ menu items, modernising core flows, and designing Axis ASAP which reached 5 lakh downloads at launch.</p>
+        <div class="cs-card-tags">
+          <span class="cs-card-tag">Consumer Mobile</span>
+          <span class="cs-card-tag">Navigation</span>
+          <span class="cs-card-tag">Fintech</span>
+          <span class="cs-card-tag">Voice UI</span>
+        </div>
+        <span class="cs-card-cta">Read Case Study</span>
+      </div>
+    </a>
+
+    <!-- CASE STUDY D -->
+    <a class="cs-card" href="case-study-d.html">
+      <div class="cs-card-img">
+        <img src="images/CaseStudy4/MomInsight_screen_04.jpg" alt="MomInsight — AI Nutrition App, Concept to Prototype">
+      </div>
+      <div class="cs-card-body">
+        <div class="cs-card-label">Personal Project &nbsp;·&nbsp; Case Study D</div>
+        <h2 class="cs-card-title">MomInsight — AI Nutrition App, Concept to Prototype</h2>
+        <p class="cs-card-sub">A personal AI-powered nutrition app for mothers of young children — designed, prototyped, and built end-to-end using Claude and Replit. Concept stage, not yet validated with real users.</p>
+        <div class="cs-card-tags">
+          <span class="cs-card-tag">AI Product</span>
+          <span class="cs-card-tag">Consumer Mobile</span>
+          <span class="cs-card-tag">Nutrition</span>
+          <span class="cs-card-tag">Prototype</span>
+        </div>
+        <span class="cs-card-cta">Read Case Study</span>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    <span class="footer-name">Kirti Goel — UX Leader</span>
+    <span class="footer-copy">© 2026 All Rights Reserved</span>
+  </footer>
+
+</div>
+
+<!-- ── MOBILE NAV OVERLAY ─────────────────────────────────────────────── -->
+<div class="nav-overlay" id="navOverlay">
+  <button class="nav-overlay-close" id="navOverlayClose">✕</button>
+  <ul class="nav-overlay-links">
+    <li><a href="index.html" class="nav-overlay-link">Home</a></li>
+    <li><a href="case-studies.html" class="nav-overlay-link active">Case Studies</a></li>
+    <li><a href="services.html" class="nav-overlay-link">Services</a></li>
+    <li><a href="about.html" class="nav-overlay-link">About</a></li>
+    <li><a href="work.html" class="nav-overlay-link">Work</a></li>
+    <li><a href="contact.html" class="nav-overlay-link">Contact</a></li>
+  </ul>
+</div>
+<script>
+  const nh = document.getElementById('navHamburger');
+  const no = document.getElementById('navOverlay');
+  const nc = document.getElementById('navOverlayClose');
+  function openNav()  { no.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeNav() { no.classList.remove('open'); document.body.style.overflow = ''; }
+  nh.addEventListener('click', openNav);
+  nc.addEventListener('click', closeNav);
+  no.addEventListener('click', e => { if (e.target === no) closeNav(); });
+  document.querySelectorAll('.nav-overlay-link').forEach(l => l.addEventListener('click', closeNav));
+</script>
+</body>
+</html>

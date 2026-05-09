@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Manual Processes on the Factory Floor to Workflows — Kirti Goel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #080807;
+  --bg2:          #111110;
+  --bg3:          #1a1a18;
+  --bg4:          #222220;
+  --border:       rgba(255,255,255,0.08);
+  --border-mid:   rgba(255,255,255,0.14);
+  --cream:        #F0E9DC;
+  --cream-muted:  #A89F92;
+  --cream-dim:    #6e6860;
+  --cream-light:  #F5F0E8;
+  --accent:       #C85F3A;
+  --accent-warm:  #D4834A;
+  --gold:         #A8894F;
+  --serif:        'Cormorant Garamond', Georgia, serif;
+  --sans:         'Syne', system-ui, sans-serif;
+  --sidebar-w:    220px;
+  --content-max:  760px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ───────────────────────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sidebar::-webkit-scrollbar { display: none; }
+
+.sidebar-header {
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sidebar-name { font-family: var(--serif); font-size: 1.25rem; font-weight: 300; color: var(--cream); letter-spacing: 0.02em; line-height: 1.2; }
+.sidebar-name span { color: var(--accent); }
+.sidebar-role { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-muted); margin-top: 4px; }
+
+.sidebar-back {
+  display: flex; align-items: center; gap: 7px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--cream-muted); text-decoration: none; transition: color 0.2s; flex-shrink: 0;
+}
+.sidebar-back:hover { color: var(--cream); }
+.sidebar-back svg { opacity: 0.6; transition: opacity 0.2s; }
+.sidebar-back:hover svg { opacity: 1; }
+
+.sidebar-nav { flex: 1; padding: 12px 0 20px; }
+.sidebar-nav-label { padding: 8px 20px 6px; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); }
+
+.nav-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 20px 7px 18px;
+  cursor: pointer; text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+.nav-item:hover { background: rgba(255,255,255,0.03); }
+.nav-item.active { border-left-color: var(--accent); background: rgba(200,95,58,0.07); }
+.nav-num { font-size: 0.65rem; font-weight: 700; color: var(--cream-dim); flex-shrink: 0; width: 22px; padding-top: 2px; letter-spacing: 0.05em; transition: color 0.15s; }
+.nav-item.active .nav-num { color: var(--accent); }
+.nav-label { font-size: 0.72rem; color: var(--cream-muted); line-height: 1.4; transition: color 0.15s; }
+.nav-item.active .nav-label, .nav-item:hover .nav-label { color: var(--cream); }
+
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-cs-tag { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.sidebar-next { display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: var(--cream-muted); font-size: 0.7rem; line-height: 1.4; transition: color 0.2s; }
+.sidebar-next:hover { color: var(--cream); }
+
+/* ── Sticky Top Bar ────────────────────────────────────────────────────── */
+.sticky-bar {
+  position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 52px;
+  background: rgba(8,8,7,0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; z-index: 40;
+}
+.sticky-bar-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.sticky-bar-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+.sticky-bar-divider { width: 1px; height: 14px; background: var(--border-mid); flex-shrink: 0; }
+.sticky-bar-title { font-family: var(--serif); font-size: 1rem; font-weight: 300; color: var(--cream); letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sticky-bar-section { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; color: var(--cream-muted); white-space: nowrap; flex-shrink: 0; opacity: 0; transform: translateY(4px); transition: opacity 0.3s, transform 0.3s; }
+.sticky-bar-section.visible { opacity: 1; transform: translateY(0); }
+.scroll-progress { position: absolute; bottom: 0; left: 0; height: 2px; width: 0%; background: var(--accent); transition: width 0.08s linear; }
+
+/* ── Main Content ──────────────────────────────────────────────────────── */
+.main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; padding-top: 52px; }
+section[id] { scroll-margin-top: 68px; }
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+.hero-img { width: 100%; max-height: 420px; overflow: hidden; }
+.hero-img img { width: 100%; height: 420px; object-fit: cover; object-position: center 30%; display: block; }
+
+/* ── Cover Block ───────────────────────────────────────────────────────── */
+.cover { max-width: var(--content-max); margin: 0 auto; padding: 40px 32px 0; }
+.cs-tag { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.cs-tag::before { content: ''; width: 28px; height: 1px; background: var(--accent); display: block; }
+.cs-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.1; color: var(--cream); letter-spacing: -0.01em; margin-bottom: 10px; }
+.cs-subtitle { font-size: 0.9rem; color: var(--cream-muted); line-height: 1.6; margin-bottom: 28px; }
+
+/* ── Meta Strip ────────────────────────────────────────────────────────── */
+.meta-strip { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border-mid); border-radius: 6px; overflow: hidden; margin-bottom: 28px; }
+.meta-cell { background: var(--bg3); padding: 14px 16px; border-right: 1px solid var(--border); }
+.meta-cell:last-child { border-right: none; }
+.meta-key { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim); margin-bottom: 5px; }
+.meta-val { font-size: 0.82rem; font-weight: 600; color: var(--cream); }
+
+/* ── Impact Bar ────────────────────────────────────────────────────────── */
+.impact-bar { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border-mid); border-radius: 6px; overflow: hidden; margin-bottom: 48px; }
+.impact-cell { background: var(--bg3); padding: 20px 14px; text-align: center; border-right: 1px solid var(--border); }
+.impact-cell:last-child { border-right: none; }
+.impact-num { font-family: var(--serif); font-size: 2.4rem; font-weight: 400; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+.impact-lbl { font-size: 0.67rem; color: var(--cream-muted); line-height: 1.5; }
+
+/* ── Sections ──────────────────────────────────────────────────────────── */
+.section { max-width: var(--content-max); margin: 0 auto; padding: 48px 32px; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; padding-bottom: 80px; }
+.section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid rgba(200,95,58,0.25); }
+.section-num { font-family: var(--sans); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; color: var(--accent); flex-shrink: 0; }
+.section-title { font-family: var(--serif); font-size: 1.75rem; font-weight: 300; color: var(--cream); line-height: 1.15; }
+.subsection-title { font-family: var(--sans); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-warm); margin: 32px 0 12px; }
+.role-tag { display: inline-block; font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); border: 1px solid var(--border-mid); border-radius: 3px; padding: 3px 8px; margin-bottom: 20px; }
+
+.body-text { font-size: 1rem; color: var(--cream-muted); line-height: 1.8; margin-bottom: 16px; }
+.body-text + .body-text { margin-top: -6px; }
+
+.bullet-list { list-style: none; margin: 8px 0 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.bullet-list li { display: flex; gap: 10px; font-size: 1rem; color: var(--cream-muted); line-height: 1.65; }
+.bullet-list li::before { content: '—'; color: var(--accent); flex-shrink: 0; font-weight: 600; }
+.bullet-list li strong { color: var(--cream); font-weight: 600; }
+.insight-callout {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 1.1rem 1.4rem;
+  margin: 1.6rem 0;
+}
+.insight-callout p {
+  font-size: 1.25rem;
+  font-weight: 400;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--cream-light);
+  line-height: 1.75;
+  margin: 0 0 0.5rem 0;
+}
+.insight-callout p:last-child { margin-bottom: 0; }
+.insight-callout p strong {
+  font-weight: 700;
+  font-style: normal;
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: var(--sans);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+
+/* ── Image Components ──────────────────────────────────────────────────── */
+.img-full { margin: 28px 0 8px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+.img-full img { width: 100%; height: auto; max-height: 400px; object-fit: cover; object-position: top; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+.img-full img:hover { opacity: 0.92; }
+
+.img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 28px 0 8px; }
+.img-pair-item { border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+.img-pair-item img { width: 100%; height: 260px; object-fit: cover; object-position: top; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+.img-pair-item img:hover { opacity: 0.92; }
+
+.img-triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 28px 0 8px; }
+.img-triple-item { border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+.img-triple-item img { width: 100%; height: 200px; object-fit: cover; object-position: top; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+.img-triple-item img:hover { opacity: 0.92; }
+
+.img-caption { font-size: 0.78rem; color: var(--cream-muted); font-style: italic; text-align: center; margin-bottom: 20px; line-height: 1.5; }
+.img-pair-captions { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.img-pair-captions span { font-size: 0.78rem; color: var(--cream-muted); font-style: italic; text-align: center; display: block; line-height: 1.5; }
+.img-triple-captions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.img-triple-labeled { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 28px 0 20px; }
+.img-triple-labeled-item { border-radius: 4px; overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; }
+.img-triple-labeled-item img { width: 100%; height: 200px; object-fit: cover; object-position: top; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+.img-triple-labeled-item img:hover { opacity: 0.92; }
+.img-triple-labeled-item .img-caption { border-top: 1px solid var(--border); margin: 0; padding: 8px 12px; text-align: left; background: var(--bg3); }
+.img-pair-labeled { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 28px 0 20px; }
+.img-pair-labeled-item { border-radius: 4px; overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; }
+.img-pair-labeled-item img { width: 100%; height: 260px; object-fit: cover; object-position: top; display: block; cursor: zoom-in; transition: opacity 0.2s; }
+.img-pair-labeled-item img:hover { opacity: 0.92; }
+.img-pair-labeled-item .img-caption { border-top: 1px solid var(--border); margin: 0; padding: 8px 12px; text-align: left; background: var(--bg3); }
+.img-triple-captions span { font-size: 0.78rem; color: var(--cream-muted); font-style: italic; text-align: center; display: block; line-height: 1.5; }
+
+/* ── Process callout box ───────────────────────────────────────────────── */
+.callout {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: 20px 22px;
+  margin: 24px 0;
+}
+.callout-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.callout p { font-size: 0.92rem; color: var(--cream-muted); line-height: 1.75; }
+
+/* ── Outcomes grid ─────────────────────────────────────────────────────── */
+.outcomes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+.outcome-group { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+.outcome-group-title { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+
+/* ── Divider & closing ─────────────────────────────────────────────────── */
+.section-rule { border: none; border-top: 1px solid var(--border); margin: 40px 0 28px; }
+.closing-note { font-size: 0.82rem; color: var(--cream-dim); font-style: italic; text-align: center; line-height: 1.7; }
+.closing-note a { color: var(--accent); text-decoration: none; font-style: normal; font-weight: 600; }
+.closing-note a:hover { color: var(--accent-warm); }
+
+/* ── Lightbox ──────────────────────────────────────────────────────────── */
+.lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 90vh; object-fit: contain; border-radius: 4px; box-shadow: 0 24px 80px rgba(0,0,0,0.6); cursor: default; }
+.lightbox-close { position: absolute; top: 20px; right: 24px; font-size: 1.8rem; color: rgba(255,255,255,0.5); cursor: pointer; line-height: 1; background: none; border: none; transition: color 0.2s; }
+.lightbox-close:hover { color: white; }
+
+/* ── Mobile hamburger (inside sticky bar) ─────────────────────────────── */
+.mobile-hamburger {
+  display: none; flex-direction: column; gap: 4px;
+  background: none; border: none; cursor: pointer; padding: 4px; margin-right: 8px; flex-shrink: 0;
+}
+.mobile-hamburger span { display: block; width: 18px; height: 2px; background: var(--cream); }
+
+/* ── Mobile back button in sticky bar ─────────────────────────────────── */
+.sticky-back {
+  display: none;
+  align-items: center; gap: 6px;
+  color: var(--cream-muted); text-decoration: none;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  transition: color 0.2s; flex-shrink: 0; margin-right: 12px;
+}
+.sticky-back svg { opacity: 0.7; }
+.sticky-back:hover { color: var(--cream); }
+
+
+/* ── Mobile nav overlay ────────────────────────────────────────────────── */
+.mobile-nav-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(8,8,7,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  flex-direction: column; overflow-y: auto;
+}
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-header {
+  padding: 20px 24px 18px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.mobile-nav-close {
+  background: none; border: none; color: var(--cream-muted);
+  font-size: 1.6rem; cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.mobile-nav-close:hover { color: var(--cream); }
+.mobile-nav-name { font-family: var(--serif); font-size: 1.25rem; font-weight: 300; }
+.mobile-nav-name span { color: var(--accent); }
+.mobile-nav-back {
+  display: flex; align-items: center; gap: 8px;
+  padding: 16px 24px; border-bottom: 1px solid var(--border);
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--cream-muted); text-decoration: none; transition: color 0.2s; flex-shrink: 0;
+}
+.mobile-nav-back:hover { color: var(--cream); }
+.mobile-nav-label {
+  padding: 16px 24px 6px; flex-shrink: 0;
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream-dim);
+}
+.mobile-nav-section {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 24px; border-bottom: 1px solid var(--border);
+  text-decoration: none; transition: background 0.15s, color 0.15s; flex-shrink: 0;
+}
+.mobile-nav-section:hover { background: rgba(255,255,255,0.03); }
+.mobile-nav-section-num { font-size: 0.62rem; font-weight: 700; color: var(--cream-dim); width: 22px; flex-shrink: 0; }
+.mobile-nav-section-label { font-size: 0.78rem; color: var(--cream-muted); line-height: 1.4; }
+.mobile-nav-footer {
+  padding: 20px 24px; border-top: 1px solid var(--border); margin-top: auto; flex-shrink: 0;
+}
+.mobile-nav-next-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.mobile-nav-next-link { font-size: 0.78rem; color: var(--cream-muted); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.mobile-nav-next-link:hover { color: var(--cream); }
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .mobile-hamburger { display: flex; }
+  .sticky-back { display: flex; }
+  .sticky-bar { left: 0; padding: 0 16px; }
+  .sticky-bar-divider { display: none; }
+  .sticky-bar-title { display: none; }
+  .sticky-bar-section { display: none; }
+  .main { margin-left: 0; padding-top: 52px; }
+  .cover { padding: 28px 20px 0; }
+  .section { padding: 36px 20px; }
+  .section-title { font-size: 1.5rem; }
+  .hero-img img { height: 220px; }
+  .cs-title { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+}
+@media (max-width: 680px) {
+  .meta-strip, .impact-bar { grid-template-columns: repeat(2, 1fr); }
+  .img-pair { grid-template-columns: 1fr; }
+  .img-pair-captions { grid-template-columns: 1fr; }
+  .img-triple { grid-template-columns: 1fr; }
+  .img-triple-captions { grid-template-columns: 1fr; }
+  .img-triple-labeled { grid-template-columns: 1fr; }
+  .outcomes-grid { grid-template-columns: 1fr; }
+  .impact-num { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── STICKY TOP BAR ───────────────────────────────────────────────────── -->
+  <div class="sticky-bar">
+    <div class="sticky-bar-left">
+      <a class="sticky-back" href="case-studies.html" aria-label="Back to case studies">
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
+          <path d="M8 1L3 6L8 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        All Case Studies
+      </a>
+      <button class="mobile-hamburger" id="mobileHamburger" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="sticky-bar-label">Case Study B</span>
+      <div class="sticky-bar-divider"></div>
+      <span class="sticky-bar-title">From Manual Processes on the Factory Floor to Workflows</span>
+    </div>
+    <span class="sticky-bar-section" id="stickySection"></span>
+    <div class="scroll-progress" id="scrollProgress"></div>
+  </div>
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-name">Kirti <span>Goel</span></div>
+      <div class="sidebar-role">UX Manager &amp; Lead</div>
+    </div>
+
+    <a href="case-studies.html" class="sidebar-back">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M8 1L3 6L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>All Case Studies</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-label">Sections</div>
+      <a class="nav-item active" href="#s01"><span class="nav-num">01</span><span class="nav-label">The Problem</span></a>
+      <a class="nav-item" href="#s02"><span class="nav-num">02</span><span class="nav-label">Live in a Week</span></a>
+      <a class="nav-item" href="#s03"><span class="nav-num">03</span><span class="nav-label">ML Setup</span></a>
+      <a class="nav-item" href="#s04"><span class="nav-num">04</span><span class="nav-label">RCA Workflow</span></a>
+      <a class="nav-item" href="#s05"><span class="nav-num">05</span><span class="nav-label">Continuous Improvement</span></a>
+      <a class="nav-item" href="#s06"><span class="nav-num">06</span><span class="nav-label">Research &amp; Iteration</span></a>
+      <a class="nav-item" href="#s07"><span class="nav-num">07</span><span class="nav-label">Outcomes</span></a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-cs-tag">Case Study A</div>
+      <a class="sidebar-next" href="case-study-a.html">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M8 1L3 6L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>From Design Debt to Design System</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ─────────────────────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero-img">
+      <img src="images/CaseStudy2/Drishti_CoverImage.webp" alt="From Manual Processes on the Factory Floor to Workflows — Drishti Workflow Suite">
+    </div>
+
+    <!-- Cover -->
+    <div class="cover">
+      <div class="cs-tag">Case Study B &nbsp;·&nbsp; Drishti Technologies</div>
+      <h1 class="cs-title">From Manual Processes on the Factory Floor to Workflows</h1>
+      <p class="cs-subtitle">Onboarding, ML Setup, RCA &amp; Kaizen — four workflows to close the gap between factory floor and AI platform</p>
+
+      <div class="meta-strip">
+        <div class="meta-cell"><div class="meta-key">Company</div><div class="meta-val">Drishti Technologies</div></div>
+        <div class="meta-cell"><div class="meta-key">Role</div><div class="meta-val">Lead Product Designer</div></div>
+        <div class="meta-cell"><div class="meta-key">Timeline</div><div class="meta-val">2021–2023</div></div>
+        <div class="meta-cell"><div class="meta-key">Platform</div><div class="meta-val">AI SaaS · Enterprise</div></div>
+      </div>
+
+      <div class="impact-bar">
+        <div class="impact-cell">
+          <div class="impact-num">8wks→1</div>
+          <div class="impact-lbl">Customer onboarding time reduced</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">4×</div>
+          <div class="impact-lbl">Faster defect investigation</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">100%</div>
+          <div class="impact-lbl">Kaizen adoption within 6 months of launch</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">3</div>
+          <div class="impact-lbl">Workflow modules shipped end-to-end</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── S01 The Problem Space ─────────────────────────────────────────── -->
+    <section class="section" id="s01">
+      <div class="section-header">
+        <span class="section-num">01 —</span>
+        <h2 class="section-title">The Problem Space</h2>
+      </div>
+
+      <div class="subsection-title">(a) Onboarding happened outside the platform</div>
+      <div class="insight-callout">
+        <p>Once a customer signs the SOW, cameras ship and installation begins — but the real work happens in emails, YAML files, and fragmented handoffs. No product surface for any of it.</p>
+      </div>
+      <p class="body-text">Station monitoring plans, Standard Work tables, production schedules, ML cost configuration — all sourced over email, rebuilt from scratch for every customer.</p>
+
+      <div class="subsection-title">(b) The ML setup relied on manual coordination</div>
+      <div class="insight-callout">
+        <p>Translating customer knowledge into ML training data happened entirely in people's heads — no structured handoff, no shared source of truth between implementation and engineering.</p>
+      </div>
+      <p class="body-text">Standard Work became training data. The ML team tuned models and looped back to the customer for fresh video whenever accuracy dipped — every cycle a manual effort.</p>
+
+      <div class="img-full">
+        <img src="images/CaseStudy2/SWCT.jpg" alt="Standard Work cycle time — manual tracking" loading="lazy">
+      </div>
+      <p class="img-caption">Standard Work cycle time — tracked manually outside the platform</p>
+
+      <div class="subsection-title">(c) The platform was bypassed — people read emailed reports</div>
+      <div class="insight-callout">
+        <p>Usage was low. Daily or weekly reports arrived by email and that was enough. Customers had no reason to open the portal — the data wasn't consumable enough to reward it.</p>
+      </div>
+      <p class="body-text">The portal was a passive archive. We needed to redesign the value of the data itself — interactive, contextual, worth returning to.</p>
+
+      <div class="subsection-title">(d) The platform didn't reflect how the floor actually worked</div>
+      <div class="insight-callout">
+        <p>Factory floors are collaborative — issues are flagged, discussed, escalated, resolved. Small fixes by supervisors, big investigations by quality teams. The platform had none of that.</p>
+      </div>
+      <p class="body-text">Kaizens, RCAs, corrective actions — happening informally, verbally, off-system. Bringing them in meant giving people a reason to mark, solve, and close issues together.</p>
+
+      <div class="img-full">
+        <img src="images/CaseStudy2/old_home_screen.png" alt="Old platform home screen — data not consumable" loading="lazy">
+      </div>
+      <p class="img-caption">Old home screen — data present but not consumable enough to drive engagement</p>
+
+      <div class="subsection-title">(e) Why this order</div>
+      <p class="body-text">Onboarding was the most critical piece first — without it, existing customers couldn't extract value from the platform at all. Until a line was properly configured, no inference ran, no data surfaced, and no other workflow was reachable. The product management team aligned on this: onboarding was blocking everything else. RCA and Kaizen came later — they required more customer maturity and product marketing effort before teams could see the value in closing the loop inside the platform rather than over email and WhatsApp.</p>
+
+    </section>
+
+    <!-- ── S02 Solution 1: Live in a Week ──────────────────────────────────── -->
+    <section class="section" id="s02">
+      <div class="section-header">
+        <span class="section-num">02 —</span>
+        <h2 class="section-title">Solution 1 — Live in a Week</h2>
+      </div>
+      <span class="role-tag">Implementation Consultant · Customer Success</span>
+
+      <div class="insight-callout">
+        <p>The platform could own what email and YAML couldn't — Standard Work and factory floor plan, captured once, shared across implementation, ML, and customer teams.</p>
+      </div>
+      <p class="body-text">A wizard UI let the implementation consultant — or the customer directly — enter all configuration data step by step. Each piece captured in the product meant one less email, one less file, one less handoff lost in a thread.</p>
+
+      <div class="subsection-title">(a) Guided setup flow</div>
+      <p class="body-text">The onboarding wizard walked consultants through every step — camera placement, station mapping, schedule configuration — before a single inference ran.</p>
+
+      <div class="img-full">
+        <img src="images/CaseStudy2/DR_Onboarding.png" alt="Onboarding flow — end-to-end station setup" loading="lazy">
+      </div>
+      <p class="img-caption">End-to-end guided onboarding — all setup steps in one surface</p>
+
+      <div class="subsection-title">(b) Station-level configuration</div>
+      <p class="body-text">Each station was configured individually through a step-gated flow. A line overview gave Customer Success a live view of setup progress across all stations — remotely, without an on-site engineer.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_LineSetup_01.png" alt="Station list — setup status at a glance" loading="lazy">
+          <p class="img-caption">Station list — setup status at a glance</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_LineSetup_02.png" alt="Station detail — step-by-step configuration" loading="lazy">
+          <p class="img-caption">Station detail — step-by-step configuration</p>
+        </div>
+      </div>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_LineSetup_03.png" alt="Line overview — all stations and their states" loading="lazy">
+          <p class="img-caption">Line overview — all stations and states</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_LineSetup_04.png" alt="Standard Work version history" loading="lazy">
+          <p class="img-caption">Station and camera linking</p>
+        </div>
+      </div>
+
+      <p class="body-text">Factory floor schedules — shift patterns, planned downtime, production windows — were captured here too, so the ML pipeline only ran inferences when the line was active.</p>
+      <div class="img-full">
+        <img src="images/CaseStudy2/DR_LineSetup_06.png" alt="Publishing a new Standard Work version — factory floor schedule" loading="lazy">
+      </div>
+      <p class="img-caption">Factory floor schedule configuration — when to run ML, when to pause</p>
+
+      <div class="subsection-title">(c) Key Design Decisions</div>
+      <div class="insight-callout">
+        <p><strong>Step-gated wizard</strong> — Linear flow, no skipping steps — eliminating the most common source of re-work.</p>
+        <p><strong>Live camera preview</strong> — Embedded live feed to confirm framing before committing. Single biggest time-saver.</p>
+        <p><strong>Plain-language errors</strong> — Every failed validation surfaced a clear fix — not a generic error code.</p>
+      </div>
+      <p class="body-text">Every skipped step was a future error. The cycle detail view made the cost of incomplete data visible — frame-level annotation showing exactly what the AI would and wouldn't be able to detect.</p>
+      <div class="img-full">
+        <img src="images/CaseStudy2/DR_LineSetup_05.png" alt="Cycle detail — frame-level step annotation" loading="lazy">
+      </div>
+      <p class="img-caption">Cycle detail — frame-level annotation showing the value of complete input data</p>
+
+      <div class="subsection-title">(d) Define Standard Work</div>
+      <p class="body-text">Standard Work captured here became the foundation for everything downstream — ML training, deviation detection, operator coaching. Annotate steps on a video timeline, set durations with tolerances, flag critical vs. non-critical — with the live published version visible alongside the draft for fast review.</p>
+      <div class="img-full">
+        <img src="images/CaseStudy2/DR_LineSetup_SWVList.png" alt="Standard Work version list — draft vs. published" loading="lazy">
+      </div>
+      <p class="img-caption">Standard Work version list — draft alongside published for fast review</p>
+    </section>
+
+    <!-- ── S03 Solution 2: ML Setup Workflow ─────────────────────────────── -->
+    <section class="section" id="s03">
+      <div class="section-header">
+        <span class="section-num">03 —</span>
+        <h2 class="section-title">Solution 2 — ML Setup Workflow</h2>
+      </div>
+      <span class="role-tag">Industrial Engineer · Implementation Consultant</span>
+
+      <div class="insight-callout">
+        <p>Standard Work in spreadsheets. ML setup gated behind engineering. We built one pipeline: author SW in the platform — it becomes training data, feeds the model, surfaces results — no scripts, no tickets.</p>
+      </div>
+
+      <div class="subsection-title">(a) Authoring Standard Work</div>
+      <p class="body-text">Annotate steps on a video timeline, set durations with tolerances, flag critical vs. non-critical — draft and live version side-by-side for fast review.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_LineSetup_DefineSW.png" alt="Defining a Standard Work step with timing thresholds" loading="lazy">
+          <p class="img-caption">Defining a SW step with timing thresholds</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_LineSetup_SWVList.png" alt="Standard Work version list — draft vs. published" loading="lazy">
+          <p class="img-caption">Version list — draft vs. published</p>
+        </div>
+      </div>
+
+      <div class="subsection-title">(b) Validate Against Real Cycles</div>
+      <div class="insight-callout">
+        <p>Before publishing, every SW version is validated against actual floor cycles — filter, scrub, compare — making deviation points immediately visible.</p>
+      </div>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_LineSetup_SearchCycles.png" alt="Searching captured cycles by operator, date, outcome" loading="lazy">
+          <p class="img-caption">Search cycles by operator, date, outcome</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_LineSetup_AddCompare.png" alt="Side-by-side cycle comparison view" loading="lazy">
+          <p class="img-caption">Side-by-side cycle comparison</p>
+        </div>
+      </div>
+
+
+
+      <div class="subsection-title">(c) ML Model Configuration</div>
+      <div class="insight-callout">
+        <p>Standard Work becomes training data. Model health, confidence levels, threshold controls — all in one surface any Implementation Consultant could drive.</p>
+      </div>
+
+      <div class="img-triple-labeled">
+        <div class="img-triple-labeled-item">
+          <img src="images/CaseStudy2/DR_AISetup_01.png" alt="Model overview — station and confidence" loading="lazy">
+          <p class="img-caption">Model overview — station &amp; confidence</p>
+        </div>
+        <div class="img-triple-labeled-item">
+          <img src="images/CaseStudy2/DR_AISetup_02.png" alt="Training data selection" loading="lazy">
+          <p class="img-caption">Training data selection</p>
+        </div>
+        <div class="img-triple-labeled-item">
+          <img src="images/CaseStudy2/DR_AISetup_03.png" alt="Threshold configuration" loading="lazy">
+          <p class="img-caption">Threshold configuration</p>
+        </div>
+      </div>
+
+      <div class="subsection-title">(d) Training Data Review</div>
+      <p class="body-text">Knowing whether the AI had "seen enough" was the key friction. A quality indicator — cycle count by station and confidence band — let engineers reject outlier cycles without touching code.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_AISetup_04.png" alt="Training cycle review — accept / reject outliers" loading="lazy">
+          <p class="img-caption">Training cycle review — accept / reject outliers</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_AISetup_05.png" alt="Confidence band summary per station" loading="lazy">
+          <p class="img-caption">Confidence band summary per station</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── S04 Solution 3: RCA Workflow ──────────────────────────────────── -->
+    <section class="section" id="s04">
+      <div class="section-header">
+        <span class="section-num">04 —</span>
+        <h2 class="section-title">Solution 3 — RCA Workflow</h2>
+      </div>
+      <span class="role-tag">Quality Engineer</span>
+
+      <div class="insight-callout">
+        <p>No audit trail. No structured hypothesis. No link between finding and corrective action. Average investigation time: days.</p>
+      </div>
+      <p class="body-text">Investigations ran across email, spreadsheets, and manual video review — with no shared record. The RCA module gave Quality Engineers one workspace: alert → hypothesis → evidence → action, linked to the station, the active SW version, and any prior RCAs on the same defect type.</p>
+
+      <div class="subsection-title">(a) Investigation home</div>
+      <p class="body-text">A single view of all open investigations — status, days unresolved, and assigned owner at a glance. No more hunting across inboxes to know where something stood.</p>
+
+      <div class="img-full">
+        <img src="images/CaseStudy2/DR_RCA_01.png" alt="RCA home — open investigations, status, and aging" loading="lazy">
+      </div>
+      <p class="img-caption">RCA home — all open investigations, status and aging visible at once</p>
+
+      <div class="subsection-title">(b) Five-step investigation canvas</div>
+      <div class="insight-callout">
+        <p>Observe → hypothesise → verify → conclude → assign. Each step optional but tracked — flexibility without losing traceability.</p>
+      </div>
+      <p class="body-text">Evidence, cycle data, and video surfaced inline at every step — engineers never left the RCA to find supporting data.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_RCA_02.png" alt="RCA detail — evidence and hypothesis canvas" loading="lazy">
+          <p class="img-caption">Evidence and hypothesis canvas</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_RCA_03.png" alt="Structured 5-Why with evidence attachment" loading="lazy">
+          <p class="img-caption">Structured 5-Why with evidence attached</p>
+        </div>
+      </div>
+
+      <div class="subsection-title">(c) From evidence to corrective action</div>
+      <p class="body-text">Correlated cycle data pulled directly from AI logs — no manual export. Once root cause was concluded, a corrective action was assigned with owner, due date, and type in the same view.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_RCA_04.png" alt="Correlated cycle data pulled from AI logs" loading="lazy">
+          <p class="img-caption">Correlated cycle data from AI logs</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_RCA_05.png" alt="Corrective action creation — owner, due date, type" loading="lazy">
+          <p class="img-caption">Corrective action — owner, due date, type</p>
+        </div>
+      </div>
+
+      <div class="subsection-title">(d) Design Principles</div>
+      <div class="insight-callout">
+        <p><strong>Evidence first</strong> — Video, cycle data, AI logs inline. Never left the RCA to find data.</p>
+        <p><strong>Progressive disclosure</strong> — Structure only when needed. Scannable summary always at top.</p>
+        <p><strong>Linked history</strong> — Prior RCAs on the same defect suggested automatically. Cut re-investigation time by half.</p>
+      </div>
+    </section>
+
+    <!-- ── S05 Solution 4: Continuous Improvement ─────────────────────────── -->
+    <section class="section" id="s05">
+      <div class="section-header">
+        <span class="section-num">05 —</span>
+        <h2 class="section-title">Solution 4 — Continuous Improvement Loop</h2>
+      </div>
+      <span class="role-tag">Line Supervisor · Quality Engineer</span>
+
+      <div class="insight-callout">
+        <p>Improvements were happening informally — spoken between shifts, never written down, never propagated. The Kaizen module gave those moments a place to land and a path to action.</p>
+      </div>
+
+      <div class="subsection-title">(a) Kaizen board</div>
+      <p class="body-text">A single space to raise, vote on, and track improvement ideas — from an operator note to a post-RCA corrective action. Ideas linked back to the station and line they came from.</p>
+
+      <div class="img-pair-labeled">
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_Collab_01.png" alt="Kaizen board — ideas by status and owner" loading="lazy">
+          <p class="img-caption">Kaizen board — ideas by status and owner</p>
+        </div>
+        <div class="img-pair-labeled-item">
+          <img src="images/CaseStudy2/DR_Collab_02.png" alt="Kaizen detail — evidence, discussion, action" loading="lazy">
+          <p class="img-caption">Kaizen detail — evidence, discussion, action</p>
+        </div>
+      </div>
+
+      <div class="insight-callout">
+        <p>Raise from context — a Kaizen opened from any anomaly or RCA finding arrived pre-filled with station, line, and evidence. No blank forms, no re-entry.</p>
+      </div>
+
+      <div class="subsection-title">(b) Collaboration tasks</div>
+      <p class="body-text">Cross-functional corrective actions from RCA and Kaizen, assigned and tracked in one view. Closed the gap between a finding and a fix.</p>
+
+      <div class="img-full">
+        <img src="images/CaseStudy2/DR_CollabTasks.png" alt="Collaboration tasks — cross-functional actions with status and owner" loading="lazy">
+      </div>
+      <p class="img-caption">Collaboration tasks — status, owner, and days open at a glance</p>
+
+      <div class="subsection-title">(c) The closed loop</div>
+      <div class="insight-callout">
+        <p><strong>Vote and prioritise</strong> — Supervisors upvote ideas. Democratic signal to the backlog — no meeting required.</p>
+        <p><strong>Link to Standard Work</strong> — Approved Kaizens trigger a new SW draft. Improvement idea to updated process in one chain: data → problem → RCA → Kaizen → Standard Work.</p>
+      </div>
+    </section>
+
+    <!-- ── S06 Research & Iteration ──────────────────────────────────────── -->
+    <section class="section" id="s06">
+      <div class="section-header">
+        <span class="section-num">06 —</span>
+        <h2 class="section-title">Research &amp; Iteration</h2>
+      </div>
+
+      <div class="insight-callout">
+        <p>Every workflow started on the factory floor — not in a meeting room. What we observed consistently contradicted what stakeholders described.</p>
+      </div>
+
+      <div class="subsection-title">(a) How we researched</div>
+      <p class="body-text">Each of the four workflows followed the same arc: factory observation → stakeholder interviews → journey mapping → prototype → usability testing. RCA went through five rounds of testing. Each round measurably reduced steps to complete an investigation.</p>
+
+      <div class="subsection-title">(b) Design pivots</div>
+      <div class="insight-callout">
+        <p><strong>Evidence before structure</strong> — Engineers opened RCA with evidence, not answers. We made attachment the first step and removed mandatory fields. Form completion improved immediately.</p>
+        <p><strong>Floor language over ML terminology</strong> — The ML setup screen used internal engineering terms that IEs on the floor had never encountered. We replaced every label with the language they already used.</p>
+        <p><strong>Raise from context, not from scratch</strong> — Kaizen adoption was near zero at launch. A blank form in a separate screen was too much friction. We added one-tap raise from any anomaly or RCA finding, with station and evidence pre-filled. Adoption reached 100% within six months.</p>
+      </div>
+
+      <div class="subsection-title">(c) Working with engineering</div>
+      <p class="body-text">Real-time video feeds, ML pipeline triggers, multi-user collaborative state — technically expensive across the board. I worked closely with engineering on feasibility and phased delivery throughout, shaping the roadmap as much as the UI.</p>
+
+      <div class="insight-callout">
+        <p>Live camera preview and inline cycle scrubbing were both scoped out as too costly early on. Both shipped — because the design made their value concrete enough to reprioritise.</p>
+      </div>
+    </section>
+
+    <!-- ── S07 Outcomes ───────────────────────────────────────────────────── -->
+    <section class="section" id="s07">
+      <div class="section-header">
+        <span class="section-num">07 —</span>
+        <h2 class="section-title">Outcomes</h2>
+      </div>
+
+      <div class="impact-bar" style="margin-bottom: 36px;">
+        <div class="impact-cell">
+          <div class="impact-num">8wks→1</div>
+          <div class="impact-lbl">Onboarding time reduced</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">4×</div>
+          <div class="impact-lbl">Faster defect investigation</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">100%</div>
+          <div class="impact-lbl">Kaizen adoption in 6 months</div>
+        </div>
+        <div class="impact-cell">
+          <div class="impact-num">0→live</div>
+          <div class="impact-lbl">Customers self-onboarding</div>
+        </div>
+      </div>
+
+      <div class="outcomes-grid">
+        <div class="outcome-group">
+          <div class="outcome-group-title">Onboarding</div>
+          <div class="insight-callout" style="margin: 0.8rem 0 0;">
+            <p>Onboarding dropped from 8 weeks to 1 week. The implementation team did not grow. Customers' own IT teams took over line configuration within one quarter of launch.</p>
+          </div>
+        </div>
+        <div class="outcome-group">
+          <div class="outcome-group-title">Quality &amp; RCA</div>
+          <div class="insight-callout" style="margin: 0.8rem 0 0;">
+            <p>Defect investigations that used to take days now closed in hours. One customer recorded a 12% reduction in line escapes in their first quarter — linked directly to faster RCA and corrective action tracking.</p>
+          </div>
+        </div>
+        <div class="outcome-group">
+          <div class="outcome-group-title">Kaizen</div>
+          <div class="insight-callout" style="margin: 0.8rem 0 0;">
+            <p>Adoption reached 100% among trained users within six months of launch. Three customers completed the full improvement loop — from Kaizen to updated Standard Work — for the first time.</p>
+          </div>
+        </div>
+        <div class="outcome-group">
+          <div class="outcome-group-title">What it took</div>
+          <div class="insight-callout" style="margin: 0.8rem 0 0;">
+            <p>18 months of sustained alignment across Product, Engineering, Customer Success, and factory-floor users. The hardest part was building a shared language between the people who build the platform and the people who use it on a production line.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-rule">
+      <p class="closing-note">
+        The platform-wide UX overhaul, design system, and persona work are covered in<br>
+        <a href="case-study-a.html">← Case Study A — From Design Debt to Design System</a>
+      </p>
+    </section>
+  </main>
+</div>
+
+<!-- ── Lightbox ───────────────────────────────────────────────────────────── -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+/* ── Section Tracking ──────────────────────────────────────────────────── */
+const navItems    = document.querySelectorAll('.nav-item');
+const sections    = document.querySelectorAll('section[id]');
+const stickyEl    = document.getElementById('stickySection');
+const progressBar = document.getElementById('scrollProgress');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navItems.forEach(item => item.classList.remove('active'));
+      const active = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+      if (active) {
+        active.classList.add('active');
+        active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+      if (stickyEl) {
+        const titleEl = entry.target.querySelector('.section-title');
+        if (titleEl) {
+          stickyEl.textContent = titleEl.textContent;
+          stickyEl.classList.add('visible');
+        }
+      }
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px', threshold: 0 });
+
+sections.forEach(s => observer.observe(s));
+
+/* ── Scroll Progress ───────────────────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  if (progressBar) progressBar.style.width = pct + '%';
+}, { passive: true });
+
+/* ── Lightbox ──────────────────────────────────────────────────────────── */
+const lightbox      = document.getElementById('lightbox');
+const lightboxImg   = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+
+document.querySelectorAll('.img-full img, .img-pair-item img, .img-pair-labeled-item img, .img-triple-item img, .img-triple-labeled-item img').forEach(img => {
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+  lightboxImg.src = '';
+}
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+/* ── Mobile Navigation ─────────────────────────────────────────────────── */
+const mobileHamburger  = document.getElementById('mobileHamburger');
+const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+const mobileNavClose   = document.getElementById('mobileNavClose');
+
+function openMobileNav()  { mobileNavOverlay.classList.add('open');    document.body.style.overflow = 'hidden'; }
+function closeMobileNav() { mobileNavOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+if (mobileHamburger) mobileHamburger.addEventListener('click', openMobileNav);
+if (mobileNavClose)  mobileNavClose.addEventListener('click', closeMobileNav);
+document.querySelectorAll('.mobile-nav-section').forEach(l => l.addEventListener('click', closeMobileNav));
+</script>
+
+<!-- ── MOBILE NAV OVERLAY ─────────────────────────────────────────────── -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+  <div class="mobile-nav-header">
+    <div class="mobile-nav-name">Kirti <span>Goel</span></div>
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close navigation">✕</button>
+  </div>
+  <a href="case-studies.html" class="mobile-nav-back">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M8 1L3 6L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    All Case Studies
+  </a>
+  <div class="mobile-nav-label">Sections</div>
+  <a class="mobile-nav-section" href="#s01"><span class="mobile-nav-section-num">01</span><span class="mobile-nav-section-label">The Problem Space</span></a>
+  <a class="mobile-nav-section" href="#s02"><span class="mobile-nav-section-num">02</span><span class="mobile-nav-section-label">Solution 1 — Live in a Week</span></a>
+  <a class="mobile-nav-section" href="#s03"><span class="mobile-nav-section-num">03</span><span class="mobile-nav-section-label">Solution 2 — ML Setup</span></a>
+  <a class="mobile-nav-section" href="#s04"><span class="mobile-nav-section-num">04</span><span class="mobile-nav-section-label">Solution 3 — RCA Workflow</span></a>
+  <a class="mobile-nav-section" href="#s05"><span class="mobile-nav-section-num">05</span><span class="mobile-nav-section-label">Solution 4 — Continuous Improvement</span></a>
+  <a class="mobile-nav-section" href="#s06"><span class="mobile-nav-section-num">06</span><span class="mobile-nav-section-label">Research &amp; Iteration</span></a>
+  <a class="mobile-nav-section" href="#s07"><span class="mobile-nav-section-num">07</span><span class="mobile-nav-section-label">Outcomes</span></a>
+  <div class="mobile-nav-footer">
+    <div class="mobile-nav-next-tag">Case Study A</div>
+    <a class="mobile-nav-next-link" href="case-study-a.html">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M8 1L3 6L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      From Design Debt to Design System
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

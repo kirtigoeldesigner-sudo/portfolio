@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# _later folder — source docs, not for deployment
+_later/
+
+# Editor
+.vscode/
